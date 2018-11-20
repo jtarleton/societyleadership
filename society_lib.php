@@ -111,7 +111,7 @@ class User {
 function preprocess_view() {
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   $pdo = \SocietyLeadership\SocietyDB::getInstance();
-  $allUsers = \SocietyLeadership\User::findByCriteria(null, true);
+  $allUsers = \SocietyLeadership\User::findByCriteria(array(), true);
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
   foreach ($allUsers as $user) {
   	$members .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
