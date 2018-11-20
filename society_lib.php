@@ -95,7 +95,7 @@ class User {
 		//$stmt->bindValue(':username', $criteria['username'], PDO::PARAM_STR);
 		$stmt->execute();
 		$users = array();
-		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
 			$users[$row['username']] = new User($row);
 		}
 		return $users;
