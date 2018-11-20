@@ -91,7 +91,7 @@ class User {
 		$pdo = \SocietyLeadership\SocietyDB::getInstance();
 		//Find by username
 		//$where = ' WHERE username = :username';
-		$stmt = $pdo->prepare('SELECT * FROM users');
+		$stmt = $pdo->prepare('SELECT * FROM user');
 		//$stmt->bindValue(':username', $criteria['username'], PDO::PARAM_STR);
 		$stmt->execute();
 		$users = array();
