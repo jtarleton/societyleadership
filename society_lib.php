@@ -1,6 +1,9 @@
 <?php 
-
 namespace SocietyLeadership;
+
+define('DB_DSN',  'mysql:host=127.0.0.1;dbname=societyleadership');
+define('DB_USER', 'societyleadership');
+define('DB_PASS', 'societyleadership');
 
 /**
  * @package SocietyLeadership
@@ -14,7 +17,7 @@ class SocietyDB
    
     /**
      * Class Constructor - Create a new database connection if one doesn't exist
-     * Set to private so no-one can create a new instance via ' = new QuickDB();'
+     * Set to private so no-one can create a new instance via ' = new SocietyDB();'
      */
     private function __construct() {
     }
@@ -142,9 +145,9 @@ function get_view() {
   return ob_get_clean();
 }
 
-/*
+/**
 
-Create a user login page where an existing user can log in using their username and
-password. Also allow for the users to log out.
+	Create a user login page where an existing user can log in using their username and
+	password. Also allow for the users to log out.
 
  */
