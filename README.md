@@ -28,20 +28,21 @@ be shown for each user:
 and check if an account with that email address exists.
 
 Bonus Features:
-	1. Create a user login page where an existing user can log in using their username and
-	password. Also allow for the users to log out.
 
-	2. Make the report page visible only to an administrator account. For all others, show an
-	"Insufficient privileges" page. If you implement this, include the administrator username
-	and password in plain text in the readme file.
+1. Create a user login page where an existing user can log in using their username and
+password. Also allow for the users to log out.
 
-	Submission Instructions:
+2. Make the report page visible only to an administrator account. For all others, show an
+"Insufficient privileges" page. If you implement this, include the administrator username
+and password in plain text in the readme file.
+
+Submission Instructions:
 	
-	● Provide a zip file with all necessary files.
-	● Include a database dump file that loads the schema and some sample data.
-	● Provide a readme file explaining any choices you made.
-	● You will be assessed on how well you have done the following:
-		○ Covered the core features requirements
-		○ Separated the UI from the back-end logic
-		○ Used object-oriented programming
-		○ Created a functional UI for the application
+Provide a zip file with all necessary files.
+Include a database dump file that loads the schema and some sample data.
+Provide a readme file explaining any choices you made.
+You will be assessed on how well you have done the following:
+	○ Covered the core features requirements
+	○ Separated the UI from the back-end logic
+	○ Used object-oriented programming
+	○ Created a functional UI for the application
