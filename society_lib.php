@@ -83,6 +83,20 @@ class User {
 			$this->$k = $v;
 		}
 	}
+
+	/**
+	 * @param string
+	 */
+	public function getAttribute($attr) {
+		return $this->$attr;
+	}
+
+	public function factoryCreate($row) {
+		$obj = new User();
+		$obj->load($row);
+		return $obj;
+	}
+
 	/**
 	 * @param array
 	 * @return array
@@ -96,7 +110,7 @@ class User {
 		$stmt->execute();
 		$users = array();
 		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-			$users[$row['username']] = new User($row);
+			$users[$row['username']] = User::factoryCreate($row);
 		}
 		return $users;
 	}
