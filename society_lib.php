@@ -2,8 +2,8 @@
 namespace SocietyLeadership;
 
 define('DB_DSN',  'mysql:host=127.0.0.1;dbname=societyleadership');
-define('DB_USER', 'societyleadership');
-define('DB_PASS', 'societyleadership');
+define('DB_USER', 'societyleadershi');
+define('DB_PASS', 'societyleadershi');
 
 /**
  * @package SocietyLeadership
