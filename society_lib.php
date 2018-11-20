@@ -1,4 +1,7 @@
 <?php 
+
+namespace SocietyLeadership;
+
 /**
  * @package SocietyLeadership
  * 
