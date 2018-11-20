@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New User Sign-Up</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- URL: /member/sign-up
+a. Username - throw an error if the username is already in use
+b. Password - minimum 6 characters
+c. First name - required
+d. Last name - required
+e. Email address - validate input for common email address formats
+
+    -->
+<fieldset>
+    <legend>Sign-Up</legend>
+    <form>
+        <label for="username">Username <input name="username" type="text" placeholder="Username"></input></label>
+        <label for="password">Password <input name="password" type="password" placeholder="Password"></input></label>
+        <label for="first">First name <input name="first" type="text" placeholder="First Name"></input></label>
+        <label for="last">Last name <input name="last" type="text" placeholder="Last Name"></input></label>
+        <label for="email">Email <input name="email" type="text" placeholder="jane@domain.com"></input></label>
+        <input type="submit" value="Sign Up"></input>
+    </form>
+</fieldset>
+
+</div>
+<script>
+	function test() {
+        console.log('test');
+	}
+</script>
+</body>
+</html>

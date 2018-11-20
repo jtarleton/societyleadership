@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Members</title>
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <!-- 
+
+Make the report page visible only to an administrator account. For all others, show an
+"Insufficient privileges" page. If you implement this, include the administrator username
+and password in plain text in the readme
+
+    -->
+<div class="container">
+<fieldset>
+    <legend>Members</legend>
+    <p>
+    {{members}}
+    </p>
+</fieldset>
+<form>
+    <label for="search_str">Search Users By Email <input name="search_str" type="text" placeholder="jane@domain.com"></input></label>
+    <input type="submit" value="Search"></input>
+</form>
+{{user_search}}
+</div>
+<script>
+	function test() {
+        console.log('test');
+	}
+</script>
+</body>
+</html>
