@@ -123,12 +123,13 @@ class User {
  * Replace template placeholders with dynamic values
  */
 function preprocess_view() {
+	die(var_dump($_SERVER['REQUEST_URI']));
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   $pdo = \SocietyLeadership\SocietyDB::getInstance();
   $allUsers = \SocietyLeadership\User::findByCriteria(array(), true);
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
   foreach ($allUsers as $user) {
-  	$members .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
+  	$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
   }
   $members .= '</tbody></table>';
 
@@ -143,21 +144,45 @@ function preprocess_view() {
 function render_view() {
   echo preprocess_view();
 }
+
 /**
  * Read HTML template from file system into variable for processing
+ * 
+ *	index.php?report/members
+ * 	index.php?member/sign-up
+ *
+ *      Please note  .htaccess in web root:
+ *
+ *      	Options +FollowSymLinks -MultiViews
+ *      	# Turn mod_rewrite on
+ *      	RewriteEngine On
+ *
+ *      	RewriteCond %{REQUEST_FILENAME} !-f
+ *      	RewriteCond %{REQUEST_FILENAME} !-d
+ *      	RewriteRule ^(.*)$ /index.php?/$1 [L]
  */
 function get_view() {
+  $requestedRoute = $_SERVER['REQUEST_URI'];
   ob_start();
   $is_admin = TRUE;
-  if($is_admin) {
-  	include(__DIR__ . '/view.html'); 
+  if ($is_admin) {
+        switch($requestedRoute) {
+                case '/member/sign-up':
+                        include(__DIR__ . '/signup.html');
+                        break;
+                case '/report/members':
+                default:
+                        include(__DIR__ . '/view.html');
+                        break;
+        }
   }
   else {
-  	//Insufficient Privileges
-  	include(__DIR__ . '/view.html'); 
+        //Insufficient Privileges
+        include(__DIR__ . '/view.html');
   }
   return ob_get_clean();
 }
+
 
 /**
 
