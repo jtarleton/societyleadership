@@ -59,7 +59,9 @@ class SocietyDB
 }
 
 
-
+/**
+ * User
+ */
 class User {
 
 	private $username, 
@@ -117,32 +119,65 @@ class User {
 }
 
 
-
-
 /**
- * Replace template placeholders with dynamic values
+ * Controller
+ * The Controller's job is to translate incoming requests into outgoing responses. In order to do this, the controller must take request * data and pass it into the Service layer. The service layer then returns data that the Controller injects into a View for 
+ * rendering. This view might be HTML for a standard web request; or, it might be something like JSON  
+ * for a RESTful API request.
+ * Red Flags: My Controller architecture might be going bad if:
+ *   The Controller makes too many requests to the Service layer.
+ *   The Controller makes a number of requests to the Service layer that don't return data.
+ *   The Controller makes requests to the Service layer without passing in arguments. 
  */
 function preprocess_view() {
-	
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
+  // Get a DB connection represented by a PDO instance.
   $pdo = \SocietyLeadership\SocietyDB::getInstance();
+
+  // Do something with the request - run validators, query DB, etc.
+  $req = new stdClass;
+  $req->request = $_REQUEST;
+  $req->get = $_GET;
+  $req->post = $_POST;
+
+  // Validate request data - error if incorrect.
+  //$req->validator->validate();
+
+  // Call data model for dynamic view data based on request
   $allUsers = \SocietyLeadership\User::findByCriteria(array(), true);
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
   foreach ($allUsers as $user) {
   	$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
   }
   $members .= '</tbody></table>';
-
+  
+  // Preprocess template/view placeholders with dynamic values
   $output = get_view();
   $output = str_replace('{{members}}', $members, $output);
 
   return $output;
 }
+
 /**
  * Send HTML header and render page
+ * The View's job is to translate data into a visual rendering for response to the Client (ie. web browser or other consumer). 
+ * The data will be supplied primarily by the Controller 
+ *   Red Flags: My View architecture might be going bad if:
+ *   The View contains business logic.
+ *   The View contains session logic. 
  */
 function render_view() {
-  echo preprocess_view();
+  session_start();
+  $requestedRoute = $_SERVER['REQUEST_URI'];
+  switch ($requestedRoute) {
+    case '/member/sign-up':
+		echo preprocess_view();
+		break;
+	case '/report/members':
+	default:
+		echo preprocess_view();
+		break;
+  }
 }
 
 /**
