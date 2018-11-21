@@ -123,7 +123,7 @@ class User {
  * Replace template placeholders with dynamic values
  */
 function preprocess_view() {
-	die(var_dump($_SERVER['REQUEST_URI']));
+	
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   $pdo = \SocietyLeadership\SocietyDB::getInstance();
   $allUsers = \SocietyLeadership\User::findByCriteria(array(), true);
