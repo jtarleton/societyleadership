@@ -263,7 +263,7 @@ function preprocess_view() {
           $_SESSION['post']['username_password']);
         if ($authUser instanceof User) {
           $_SESSION['authenticated'] = true;
-          $_SESSION['authenticated']['authUser'] = serialize($authUser);
+          $_SESSION['authUser'] = serialize($authUser);
          
         }
         elseif ($authUser === false) {
@@ -418,8 +418,8 @@ function preprocess_view() {
 
   if (!empty($_SESSION['authenticated'])) {
     $loginForm = '';
-    if (!empty($_SESSION['authenticated']['authUser'])) {
-      $userObj = unserialize($_SESSION['authenticated']['authUser']); 
+    if (!empty($_SESSION['authUser'])) {
+      $userObj = unserialize($_SESSION['authUser']); 
       $last = '';
       if($userObj instanceof User) {
         $last = $userObj->getAttribute('last');
@@ -453,6 +453,7 @@ function render_view() {
 		break;
   case '/member/logout':
     $_SESSION['authenticated'] = null;
+    $_SESSION['authUser'] = null;
     echo preprocess_view();
     break;
 	case '/report/members':
@@ -485,13 +486,13 @@ function get_view() {
   $isAdmin = false;
   
   //Unserialize user from session...check privilege.
-  if (!empty($_SESSION['authenticated']['authUser'])) {
-    $userObj = unserialize($_SESSION['authenticated']['authUser']); 
+  if (!empty($_SESSION['authUser'])) {
+    $userObj = unserialize($_SESSION['authUser']); 
   }
  
   if ($userObj instanceof User) {
     $isAdmin = true;
-    //$isAdmin = $_SESSION['authenticated']['authUser']->isAdmin(); 
+    //$isAdmin = $_SESSION['authUser']->isAdmin(); 
   }
   
   if ($isAdmin) {
