@@ -143,7 +143,7 @@ function preprocess_view() {
 
   $validator = new \SocietyLeadership\Validator();
   // Validate request data - error if incorrect.
-  if (!$req->validator->validateStringEmail($req->post['email'])) {
+  if (!$validator->validateStringEmail($req->post['email'])) {
     $_SESSION['flash_msgs'][] = 'Invalid email.';
   }
 
