@@ -407,7 +407,7 @@ function preprocess_view() {
 
   $output = (!empty($_SESSION['authenticated'])) 
     ? str_replace('{{loggedin_user}}', 
-      'You are logged in. Welcome.' . $authUser->getAttribute('last')
+      'You are logged in. Welcome.' 
       , $output)
     : str_replace('{{loggedin_user}}', '', $output);
   return $output;
