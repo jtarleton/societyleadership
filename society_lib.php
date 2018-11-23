@@ -322,6 +322,13 @@ function preprocess_view() {
     $output = str_replace('{{search_result}}', '', $output); 
   }
 
+  // Default values for sign up 
+  // form can be empty except on submission.
+  $output = str_replace('{{username}}', '', $output);
+  $output = str_replace('{{first}}', '', $output);
+  $output = str_replace('{{last}}', '', $output);
+  $output = str_replace('{{password}}', '', $output);
+  $output = str_replace('{{email}}', '', $output);
 
   return $output;
 }
