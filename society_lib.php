@@ -197,6 +197,7 @@ class User {
  *   The Controller makes requests to the Service layer without passing in arguments. 
  */
 function preprocess_view() {
+
   $_SESSION['flash_msgs'] = null;
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   // Get a DB connection represented by a PDO instance.
@@ -206,7 +207,7 @@ function preprocess_view() {
   $req = new \stdClass;
 
   // Always filter raw request data
-  foreach($_POST as $k => $v) {
+  foreach ($_POST as $k => $v) {
     $v = trim($v);
     $req->post[$k] = strip_tags($v);
   }
@@ -252,17 +253,19 @@ function preprocess_view() {
         $_SESSION['flash_msgs'][] = 'Error adding user.'; 
       } 
     }
+    // Search result by email
+    $foundUsers = \SocietyLeadership\User::findByCriteria(
+      array('email' => $req->post['search_str'])
+    );
+    
+    if (!empty($foundUsers)) {
+      $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
+    }    
   }
 
   // Call data model for dynamic view data based on request
   $allUsers = \SocietyLeadership\User::findByCriteria(array());
 
-  $foundUsers = \SocietyLeadership\User::findByCriteria(
-    array('email' => $req->post['search_str'])
-  );
-  if (!empty($foundUsers)) {
-    $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
-  }
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
 
   foreach ($allUsers as $user) {
@@ -284,7 +287,7 @@ function preprocess_view() {
     $foundUser = current($foundUsers);
     $output = str_replace('{{search_result}}', 
         sprintf('Found 
-          user  matching <b>%s</b>: <ul><li>%s</li></ul>', 
+          user matching <b>%s</b>: <ul><li>%s</li></ul>', 
           $req->post['search_str'],
           $foundUser->getAttribute('last')
         ), $output);
@@ -292,6 +295,8 @@ function preprocess_view() {
   else {
     $output = str_replace('{{search_result}}', '', $output); 
   }
+
+
   return $output;
 }
 
