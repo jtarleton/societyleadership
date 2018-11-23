@@ -154,12 +154,12 @@ class User {
         :role,
         :created
       )');
-      $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
-      $stmt->bindValue(':first', $this->first, PDO::PARAM_STR);
-      $stmt->bindValue(':last', $this->last, PDO::PARAM_STR);
-      $stmt->bindValue(':password', $this->password, PDO::PARAM_STR);
-      $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-      $stmt->bindValue(':role', 'user', PDO::PARAM_STR);
+      $stmt->bindValue(':username', $this->username, \PDO::PARAM_STR);
+      $stmt->bindValue(':first', $this->first, \PDO::PARAM_STR);
+      $stmt->bindValue(':last', $this->last, \PDO::PARAM_STR);
+      $stmt->bindValue(':password', $this->password, \PDO::PARAM_STR);
+      $stmt->bindValue(':email', $this->email, \PDO::PARAM_STR);
+      $stmt->bindValue(':role', 'user', \PDO::PARAM_STR);
       $stmt->bindValue(':created', date('Y-m-d H:i:s'), 
         PDO::PARAM_STR);
       $stmt->execute();
