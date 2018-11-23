@@ -87,6 +87,10 @@ class User {
 		}
 	}
 
+  /**
+   * @param string
+   * @param string
+   */
   public function setAttribute($attr, $value) {
     $this->$attr = $value;
   }
@@ -98,6 +102,9 @@ class User {
 		return $this->$attr;
 	}
 
+  /**
+   * @param array
+   */
 	public function factoryCreate($row) {
 		$obj = new User();
 		$obj->load($row);
@@ -151,6 +158,11 @@ class User {
     return $user->saveNew();
   }
 
+  /**
+   * @param string
+   * @param string
+   * @param mix (false|User)
+   */
   public static function authenticate($username, $password) {
     global $ini_array;
     $user = new User();
@@ -163,14 +175,13 @@ class User {
     if ($username === $storedUsername
       && $password === $storedPassword
     ) {
-      die(var_dump($user ));
       return $user;
     }
     return false;
   }
 
   /**
-   * @return Bool
+   * @return boolean
    */
   public function saveNew() {
       $pdo = \SocietyLeadership\SocietyDB::getInstance();
@@ -375,6 +386,24 @@ function preprocess_view() {
   $output = str_replace('{{email}}', '', $output);
 
   $authUser = unserialize($_SESSION['authenticated']['authUser']);
+
+
+  $topMenuItems = array(
+    'members'=> '<a href="/report/members">Members List</a>',
+    'sign-up'=> '<a href="/member/sign-up">Sign-up</a>',
+    'login'=> '<a href="/member/login">Login</a>',
+    'logout'=> '<a href="/member/logout">Logout</a>'
+  );
+
+  if (!empty($_SESSION['authenticated']['authUser'])) {
+    unset($topMenuItems['login']);
+  }
+  else {
+    unset($topMenuItems['logout']);
+  }
+
+  $topMenu = sprintf('<ul><li>%s</ul>', implode('</li>', $topMenuItems));
+  $output = str_replace('{{topmenu}}', $topMenuItems, $output);
 
   $output = (!empty($_SESSION['authenticated']['authUser'])) 
     ? str_replace('{{loggedin_user}}', 

@@ -6,16 +6,9 @@
 
     </style>
 </head>
-<body>
-    <div id="topmenu">
-
-        {{loggedin_user}}
-    <ul>
-        <li><a href="/report/members">Members List</a></li>
-        <li><a href="/member/sign-up">Sign-up</a></li>
-        <li><a href="/member/login">Login</a></li>
-        <li><a href="/member/logout">Logout</a></li>
-    </ul>
+<body><div class="container">
+     <div id="topmenu">  {{loggedin_user}}
+    {{topmenu}}
 </div>
 
     <!-- 
@@ -25,7 +18,7 @@ Make the report page visible only to an administrator account. For all others, s
 and password in plain text in the readme
 
     -->
-<div class="container">
+
     {{search_result}}
 <fieldset>
     <legend>Members</legend>

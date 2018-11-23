@@ -6,16 +6,11 @@
 
     </style>
 </head>
-<body>
-     <div id="topmenu">  {{loggedin_user}}
-    <ul>
-        <li><a href="/report/members">Members List</a></li>
-        <li><a href="/member/sign-up">Sign-up</a></li>
-        <li><a href="/member/login">Login</a></li>
-        <li><a href="/member/logout">Logout</a></li>
-    </ul>
+<body><div class="container">
+       <div id="topmenu">  {{loggedin_user}}
+    {{topmenu}}
 </div>
-<div class="container">
+
     <!-- URL: /member/sign-up
 a. Username - throw an error if the username is already in use
 b. Password - minimum 6 characters

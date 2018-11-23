@@ -7,19 +7,10 @@
     </style>
 </head>
 <body>
-    <div id="topmenu">  {{loggedin_user}}
-    <ul>
-        <li><a href="/report/members">Members List</a></li>
-        <li><a href="/member/sign-up">Sign-up</a></li>
-        <li><a href="/member/login">Login</a></li>
-        <li><a href="/member/logout">Logout</a></li>
-    </ul>
-</div>
-
-    <!-- 
-
-    -->
 <div class="container">
+        <div id="topmenu">  {{loggedin_user}}
+    {{topmenu}}
+</div>
 
     <form action="/member/login" method="POST">
         <label for="username_login">Username <input name="username_login" type="text"></input></label>
