@@ -245,7 +245,7 @@ function preprocess_view() {
         //User::authenticate($_SESSION['post']['username_login'], 
           //$_SESSION['post']['username_password']);
         if ($authUser) {
-          $_SESSION['authenticated']['authUser'] = $authUser;
+          $_SESSION['authenticated']['authUser'] = serialize($authUser);
           $_SESSION['authenticated'] = true;
         }
       }
@@ -369,12 +369,12 @@ function preprocess_view() {
   $output = str_replace('{{last}}', '', $output);
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
+
+  $authUser = unserialize($_SESSION['authenticated']['authUser']);
+
   $output = (!empty($_SESSION['authenticated'])) 
     ? str_replace('{{loggedin_user}}', 
-      'You are logged in. Welcome.'
-
-      
-
+      'You are logged in. Welcome.' . $authUser->getAttribute('last')
       , $output)
     : str_replace('{{loggedin_user}}', '', $output);
   return $output;
