@@ -260,27 +260,30 @@ function preprocess_view() {
       $output = str_replace('{{email}}', $_SESSION['post']['email'], $output);
     }
     
-    //Add new user by calling saveNew on a User instance
-    if (User::doInsert(
-        array(
-          'username' => $req->post['username'],
-          'first' => $req->post['first'],
-          'last' => $req->post['last'],
-          'password' => $req->post['password'],
-          'email' => $req->post['email']
+    // Only add user if the validation error array is still empty.
+    if (empty($_SESSION['flash_msgs'])) {
+      //Add new user by calling saveNew on a User instance
+      if (User::doInsert(
+          array(
+            'username' => $req->post['username'],
+            'first' => $req->post['first'],
+            'last' => $req->post['last'],
+            'password' => $req->post['password'],
+            'email' => $req->post['email']
+          )
         )
-      )
-    ) {
-      $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
-      $output = str_replace('{{username}}', '', $output);
-      $output = str_replace('{{first}}', '', $output);
-      $output = str_replace('{{last}}', '', $output);
-      $output = str_replace('{{password}}', '', $output);
-      $output = str_replace('{{email}}', '', $output);
+      ) {
+        $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
+        $output = str_replace('{{username}}', '', $output);
+        $output = str_replace('{{first}}', '', $output);
+        $output = str_replace('{{last}}', '', $output);
+        $output = str_replace('{{password}}', '', $output);
+        $output = str_replace('{{email}}', '', $output);
+      }
+      else {
+        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
+      } 
     }
-    else {
-      $_SESSION['flash_msgs'][] = 'Error adding user.'; 
-    } 
     
     // Search result by email
     $foundUsers = \SocietyLeadership\User::findByCriteria(
