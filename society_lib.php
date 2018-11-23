@@ -78,6 +78,14 @@ class User {
     $this->pdo = \SocietyLeadership\SocietyDB::getInstance();
 	}
 
+  public function __sleep() { 
+    $this->pdo = null;
+  }
+
+  public function __wakeup() {
+    $this->pdo = \SocietyLeadership\SocietyDB::getInstance();
+  }
+
 	/**
 	 * @param array
 	 */
