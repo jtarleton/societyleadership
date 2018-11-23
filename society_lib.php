@@ -201,7 +201,7 @@ function preprocess_view() {
   $_SESSION['flash_msgs'] = null;
   $_SESSION['post'] = null;
   $validator = new \SocietyLeadership\Validator();
-  $validator->setAttribute('executed', false);
+  $validator->setAttribute('executed', null);
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   // Get a DB connection represented by a PDO instance.
   //$pdo = \SocietyLeadership\SocietyDB::getInstance();
@@ -225,7 +225,7 @@ function preprocess_view() {
     $candidateUser = new User();
     $candidateUser->setAttribute('username', $req->post['username']);
     $candidateUser->setAttribute('email', $req->post['email']);
-    if (!$validator->getAttribute('executed')) {
+    if (empty($validator->getAttribute('executed'))) {
       if (!$validator->validateStringEmail($req->post['email'])) {
         $_SESSION['flash_msgs'][] = 'Invalid email.';
       } 
