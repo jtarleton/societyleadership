@@ -409,8 +409,6 @@ function preprocess_view() {
 
   $loginForm = require(__DIR__ . '/_login_form.php');
 
-  $output = str_replace('{{login_form}}', $loginForm, $output);
- 
   if (!empty($_SESSION['authenticated'])) {
     $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome.', $output);
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
