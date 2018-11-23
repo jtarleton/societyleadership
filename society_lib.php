@@ -161,7 +161,7 @@ class User {
       $stmt->bindValue(':email', $this->email, \PDO::PARAM_STR);
       $stmt->bindValue(':role', 'user', \PDO::PARAM_STR);
       $stmt->bindValue(':created', date('Y-m-d H:i:s'), 
-        PDO::PARAM_STR);
+        \PDO::PARAM_STR);
       $stmt->execute();
       $inserted = $stmt->rowCount();
       return ($inserted > 0);
