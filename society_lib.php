@@ -324,7 +324,7 @@ function preprocess_view() {
           $foundUser->getAttribute('last')
         ), $output);
   }
-  else {
+  elseif (!empty($req->post['search_str'])) {
     $output = str_replace('{{search_result}}', sprintf('No user found for <b>%s</b>', $req->post['search_str']), $output); 
   }
 
