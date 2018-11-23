@@ -129,7 +129,7 @@ class User {
 		
     $stmt = $pdo->prepare($sql);
 		if (!empty($criteria)) {
-      $stmt->bindValue(':field', $criteria[$field], PDO::PARAM_STR);
+      $stmt->bindValue(':field', $criteria[$field], \PDO::PARAM_STR);
     }
 		$stmt->execute();
 		$users = array();
@@ -240,12 +240,14 @@ function preprocess_view() {
   // Call data model for dynamic view data based on request
   $allUsers = \SocietyLeadership\User::findByCriteria(array());
 
-  $foundUser = \SocietyLeadership\User::findByCriteria(
+  $foundUsers = \SocietyLeadership\User::findByCriteria(
     array('email' => $req->get['search_str'])
   );
-
+  if (!empty($foundUsers)) {
+    $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->get['search_str']);
+  }
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
-  
+
   foreach ($allUsers as $user) {
   	$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
   }
@@ -255,9 +257,13 @@ function preprocess_view() {
   $output = get_view();
   $output = str_replace('{{flash_msgs}}', implode('<br />', $_SESSION['flash_msgs']), $output);
   $output = str_replace('{{members}}', $members, $output);
-  $output = (isset($foundUser)) 
-    ? str_replace('{{search_result}}', $foundUser->last, $output) 
-    : str_replace('{{search_result}}', '', $output);
+  if (!empty($foundUsers)) {
+    $foundUser = current($foundUsers);
+    $output = str_replace('{{search_result}}', $foundUser->last, $output);
+  }
+  else {
+    $output = str_replace('{{search_result}}', '', $output); 
+  }
   return $output;
 }
 

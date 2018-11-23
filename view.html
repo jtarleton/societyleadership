@@ -28,11 +28,11 @@ and password in plain text in the readme
     {{members}}
     </p>
 </fieldset>
-<form>
+<form action="/user/">
     <label for="search_str">Search Users By Email <input name="search_str" type="text" placeholder="jane@domain.com"></input></label>
     <input type="submit" value="Search"></input>
 </form>
-{{user_search}}
+{{search_result}}
 </div>
 <script>
 	function test() {
