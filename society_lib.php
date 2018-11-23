@@ -206,6 +206,9 @@ function preprocess_view() {
   $req = new \stdClass;
 
   // Always filter raw request data
+  foreach($_GET as $k => $v) {
+    $req->get[$k] = strip_tags($v);
+  }
   foreach($_POST as $k => $v) {
     $req->post[$k] = strip_tags($v);
   }
