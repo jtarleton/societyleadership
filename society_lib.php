@@ -372,8 +372,8 @@ function preprocess_view() {
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
   $output = (!empty($_SESSION['authenticated']['user'])) 
-    ? str_replace('{{loggedin_user}}', $_SESSION['authenticated']['user']->getAttribute('last'), $output) 
-    : str_replace('{{loggedin_user}}', '', $output;
+    ? str_replace('{{loggedin_user}}', $_SESSION['authenticated']['user']->getAttribute('last'), $output)
+    : str_replace('{{loggedin_user}}', '', $output);
   return $output;
 }
 
