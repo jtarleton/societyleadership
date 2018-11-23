@@ -22,9 +22,12 @@ d. Last name - required
 e. Email address - validate input for common email address formats
 
     -->
+<div>
+    {{flash_msgs}}
+</div>
 <fieldset>
     <legend>Sign-Up</legend>
-    <form>
+    <form action="/member/sign-up" method="POST">
         <label for="username">Username <input name="username" type="text" placeholder="Username"></input></label>
         <label for="password">Password <input name="password" type="password" placeholder="Password"></input></label>
         <label for="first">First name <input name="first" type="text" placeholder="First Name"></input></label>

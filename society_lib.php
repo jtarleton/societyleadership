@@ -130,6 +130,7 @@ class User {
  *   The Controller makes requests to the Service layer without passing in arguments. 
  */
 function preprocess_view() {
+  $_SESSION['flash_msgs'] = null;
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   // Get a DB connection represented by a PDO instance.
   $pdo = \SocietyLeadership\SocietyDB::getInstance();
@@ -140,8 +141,11 @@ function preprocess_view() {
   $req->get = $_GET;
   $req->post = $_POST;
 
+  $validator = new Validator();
   // Validate request data - error if incorrect.
-  //$req->validator->validate();
+  if (!$req->validator->validateStringEmail($req->post['email'])) {
+    $_SESSION['flash_msgs'][] = 'Invalid email.';
+  }
 
   // Call data model for dynamic view data based on request
   $allUsers = \SocietyLeadership\User::findByCriteria(array(), true);
@@ -153,6 +157,7 @@ function preprocess_view() {
   
   // Preprocess template/view placeholders with dynamic values
   $output = get_view();
+  $output = str_replace('{{flash_msgs}}', implode('<br />', $_SESSION['flash_msgs']), $output);
   $output = str_replace('{{members}}', $members, $output);
 
   return $output;
