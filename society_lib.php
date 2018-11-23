@@ -187,33 +187,36 @@ function preprocess_view() {
 
   // Do something with the request - run validators, query DB, etc.
   $req = new \stdClass;
-  $req->request = $_REQUEST;
-  $req->get = $_GET;
-  $req->post = $_POST;
+  
+  // Always filter raw request data
+  foreach($_POST as $k => $v) {
+    $req->post[$k] = strip_tags($v);
+  }
 
-  $validator = new \SocietyLeadership\Validator();
   if (!empty($req->post)) {
     // Validate request data - error if incorrect.
+    $validator = new \SocietyLeadership\Validator();
     if (!$validator->validateStringEmail($req->post['email'])) {
       $_SESSION['flash_msgs'][] = 'Invalid email.';
     } 
-
-    //Add new user by calling saveNew on a User instance
-    if (User::doInsert(
-        array(
-          'username'=>$req->post['username'],
-          'first'=>$req->post['first'],
-          'last'=>$req->post['last'],
-          'password'=>$req->post['password'],
-          'email'=>$req->post['email']
-
-        )
-      )
-    ) {
-      $_SESSION['flash_msgs'][] = 'Added user.'; 
-    }
     else {
-      $_SESSION['flash_msgs'][] = 'Error adding user.'; 
+      //Add new user by calling saveNew on a User instance
+      if (User::doInsert(
+          array(
+            'username' => $req->post['username'],
+            'first' => $req->post['first'],
+            'last' => $req->post['last'],
+            'password' => $req->post['password'],
+            'email' => $req->post['email']
+
+          )
+        )
+      ) {
+        $_SESSION['flash_msgs'][] = 'Added user.'; 
+      }
+      else {
+        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
+      } 
     }
   }
 
