@@ -152,14 +152,13 @@ class User {
   }
 
   public static function authenticate($username, $password) {
-
-   global $ini_array;
-    die(var_dump($ini_array['first_section']['admin_config']));
+    global $ini_array;
+    $password = $ini_array['first_section']['admin_config']['password'];
     $user = new User();
     $user->setAttribute('username', $username);
     $user->setAttribute('password', $password);
-    if ($user->getAttribute('username') === 'jtarleton'
-      && $user->getAttribute('password') === 'jtarleton'
+    if ($user->getAttribute('username') ===  base64_decode($ini_array['first_section']['admin_config']['username'])
+      && $user->getAttribute('password') === base64_decode($ini_array['first_section']['admin_config']['password'])
     ) {
       return $user;
     }
