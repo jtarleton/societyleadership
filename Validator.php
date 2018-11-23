@@ -3,11 +3,22 @@ namespace SocietyLeadership;
 
 class Validator {
 	
+
+	public function __construct() {
+		$this->executed = false;
+	}
+	/**
+	 * @return Boolean
+	 */
+	public function executed() {
+		return $this->executed;
+	}
 	/**
 	 * @param string
 	 * @return boolean
 	 */
 	public function validateStringEmail($email) {
+		$this->executed = true;
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) { 
 			return true;
 		}
@@ -19,19 +30,23 @@ class Validator {
 	 * @return bool
 	 */
 	public function validateStringNotEmpty($string) {
+		$this->executed = true;
 		$string = trim($string);
 		if (!empty($string) && is_string($string)) {
 			return true;
 		}
+		
 		return false;
 	}
 
 	public function validateStringLength($string, $limit = 6) {
+		$this->executed = true;
 		// only pass if the string is at least $limit 
 		// characters in length
 		if (strlen($string) >= (int) $limit) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -40,6 +55,7 @@ class Validator {
 	 * @return boolean
 	 */
 	public function validateUserNoneExists(User $user) {
+		$this->executed = true;
 		// check the user does not already exist in the DB
 
 		$foundUsers = \SocietyLeadership\User::findByCriteria(

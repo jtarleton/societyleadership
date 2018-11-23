@@ -218,23 +218,24 @@ function preprocess_view() {
     $candidateUser = new User();
     $candidateUser->setAttribute('username',$req->post['username']);
     $candidateUser->setAttribute('email',$req->post['email']);
-    
-    if (!$validator->validateStringEmail($req->post['email'])) {
-      $_SESSION['flash_msgs'][] = 'Invalid email.';
-    } 
-    elseif (!$validator->validateStringLength($req->post['password'])) {
-      $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
-    }
-    elseif (!$validator->validateUserNoneExists($candidateUser)) {
-      $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> already exists.', 
-        $candidateUser->getAttribute('username')
-      );
-    }
-    elseif (!$validator->validateStringNotEmpty($req->post['first'])) {
-      $_SESSION['flash_msgs'][] = 'First name is a required field.';
-    }
-    elseif (!$validator->validateStringNotEmpty($req->post['last'])) {
-      $_SESSION['flash_msgs'][] = 'Last name is a required field.';
+    if (!$validator->executed()) {
+      if (!$validator->validateStringEmail($req->post['email'])) {
+        $_SESSION['flash_msgs'][] = 'Invalid email.';
+      } 
+      if (!$validator->validateStringLength($req->post['password'])) {
+        $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
+      }
+      if (!$validator->validateUserNoneExists($candidateUser)) {
+        $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> already exists.', 
+          $candidateUser->getAttribute('username')
+        );
+      }
+      if (!$validator->validateStringNotEmpty($req->post['first'])) {
+        $_SESSION['flash_msgs'][] = 'First name is a required field.';
+      }
+      if (!$validator->validateStringNotEmpty($req->post['last'])) {
+        $_SESSION['flash_msgs'][] = 'Last name is a required field.';
+      } 
     }
     else {
       //Add new user by calling saveNew on a User instance
