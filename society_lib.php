@@ -482,7 +482,7 @@ function get_view() {
                         include(__DIR__ . '/signup.html');
                         break;
                 case '/member/logout':
-                        include(__DIR__ . '/view.html');
+                        include(__DIR__ . '/logout.html');
                         break;
                 case '/member/login':
                         include(__DIR__ . '/login.html');
@@ -499,7 +499,7 @@ function get_view() {
                         include(__DIR__ . '/signup.html');
                         break;
                 case '/member/logout':
-                        include(__DIR__ . '/view.html');
+                        include(__DIR__ . '/logout.html');
                         break;
                 case '/member/login':
                 default:
