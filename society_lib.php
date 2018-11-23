@@ -230,6 +230,9 @@ function preprocess_view() {
           $candidateUser->getAttribute('username')
         );
       }
+      if (!$validator->validateStringNotEmpty($req->post['username'])) {
+        $_SESSION['flash_msgs'][] = 'Username is a required field.';
+      } 
       if (!$validator->validateStringNotEmpty($req->post['first'])) {
         $_SESSION['flash_msgs'][] = 'First name is a required field.';
       }
