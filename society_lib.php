@@ -372,7 +372,7 @@ function preprocess_view() {
 
   $authUser = unserialize($_SESSION['authenticated']['authUser']);
 
-  $output = (!empty($_SESSION['authenticated'])) 
+  $output = (!empty($_SESSION['authenticated']['authUser'])) 
     ? str_replace('{{loggedin_user}}', 
       'You are logged in. Welcome.' . $authUser->getAttribute('last')
       , $output)
