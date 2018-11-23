@@ -214,9 +214,9 @@ function preprocess_view() {
   $_SESSION['flash_msgs'] = null;
   $_SESSION['post'] = null;
 
-  if ($_GET['logout']) {
-    $_SESSION['authenticated'] = null;
-  }
+  //if ($_GET['logout'] == true) {
+   // $_SESSION['authenticated'] = null;
+  //}
 
   $validator = new \SocietyLeadership\Validator();
   $validator->setAttribute('executed', null);
@@ -372,7 +372,7 @@ function preprocess_view() {
   $output = str_replace('{{last}}', '', $output);
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
-  $output = (!empty($_SESSION['authUser'])) 
+  $output = (!empty($_SESSION['authenticated'])) 
     ? str_replace('{{loggedin_user}}', 
       'You are logged in. Welcome.'
 
