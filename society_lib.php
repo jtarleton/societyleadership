@@ -294,9 +294,6 @@ function preprocess_view() {
       if (!empty($foundUsers)) {
         $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
       }    
-      else {
-        $_SESSION['flash_msgs'][] = sprintf('No user found for %s.', $req->post['search_str']);
-      } 
     }
   }
 
@@ -328,7 +325,7 @@ function preprocess_view() {
         ), $output);
   }
   else {
-    $output = str_replace('{{search_result}}', '', $output); 
+    $output = str_replace('{{search_result}}', sprintf('No user found for <b>%s</b>', $req->post['search_str']), $output); 
   }
 
   // Default values for sign up 
