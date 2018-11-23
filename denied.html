@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>No Access</title>
+    <style>
+
+    </style>
+</head>
+<body><div class="container">
+     <div id="topmenu">  {{loggedin_user}}
+    {{topmenu}}
+</div>
+
+    <!-- 
+
+Make the report page visible only to an administrator account. For all others, show an
+"Insufficient privileges" page. If you implement this, include the administrator username
+and password in plain text in the readme
+
+    -->
+
+<fieldset>
+    <legend>Denied</legend>
+    <p>
+	Insufficient Privileges
+    </p>
+</fieldset>
+
+
+
+</div>
+<script>
+	function test() {
+        console.log('test');
+	}
+</script>
+</body>
+</html>
+
