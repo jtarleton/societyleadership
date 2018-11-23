@@ -197,8 +197,10 @@ class User {
  *   The Controller makes requests to the Service layer without passing in arguments. 
  */
 function preprocess_view() {
-
+  //clear session values.
   $_SESSION['flash_msgs'] = null;
+  $_SESSION['post'] = null;
+
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   // Get a DB connection represented by a PDO instance.
   //$pdo = \SocietyLeadership\SocietyDB::getInstance();
@@ -216,6 +218,7 @@ function preprocess_view() {
   }
 
   if (!empty($req->post)) {
+    $_SESSION['post'] = $req->post;
     // Validate request data - error if incorrect.
     $validator = new \SocietyLeadership\Validator();
     $candidateUser = new User();
@@ -244,8 +247,8 @@ function preprocess_view() {
       } 
 
         // Display request as default values if validation fails.
-      $output = str_replace('
-      {{username}}', $req->post['username'], $output);
+      $output = str_replace('{{username}}', 
+        $_SESSION['post']['username'], $output);
 
     }
     else {
@@ -257,7 +260,6 @@ function preprocess_view() {
             'last' => $req->post['last'],
             'password' => $req->post['password'],
             'email' => $req->post['email']
-
           )
         )
       ) {
