@@ -244,10 +244,10 @@ function preprocess_view() {
         !empty($_SESSION['post']['username_login']) 
           && !empty($_SESSION['post']['username_password'])
       ) {
-        $authUser = User::authenticate($_SESSION['post']['username_login'], 
-          $_SESSION['post']['username_password']);
+        $authUser = 1; ////User::authenticate($_SESSION['post']['username_login'], 
+          //$_SESSION['post']['username_password']);
         if ($authUser) {
-          $_SESSION['authenticated']['user'] = $authUser;
+          $_SESSION['authUser'] = $authUser;
           $_SESSION['authenticated'] = true;
         }
       }
@@ -371,13 +371,18 @@ function preprocess_view() {
   $output = str_replace('{{last}}', '', $output);
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
-  $output = (!empty($_SESSION['authenticated']['user'])) 
-    ? str_replace('{{loggedin_user}}', 'You are logged in. Welcome.', $output)
+  $output = (!empty($_SESSION['authUser'])) 
+    ? str_replace('{{loggedin_user}}', 
+      'You are logged in. Welcome.'
+
+      . $_SESSION['authUser']
+
+      , $output)
     : str_replace('{{loggedin_user}}', '', $output);
   return $output;
 }
 
-/**
+/** ->getAttribute('last'), $output)
  * Send HTML header and render page
  * The View's job is to translate data into a visual rendering for response to the Client (ie. web browser or other consumer). 
  * The data will be supplied primarily by the Controller 
