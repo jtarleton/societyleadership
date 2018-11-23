@@ -256,10 +256,10 @@ function preprocess_view() {
         !empty($_SESSION['post']['username_login']) 
           && !empty($_SESSION['post']['username_password'])
       ) {
+        $_SESSION['authenticated'] = true;
         $authUser = User::authenticate($_SESSION['post']['username_login'], 
           $_SESSION['post']['username_password']);
         if ($authUser instanceof User) {
-          $_SESSION['authenticated'] = true;
           $_SESSION['authenticated']['authUser'] = serialize($authUser);
          
         }
@@ -405,7 +405,7 @@ function preprocess_view() {
   $topMenu = sprintf('<ul><li>%s</li></ul>', implode('</li><li>', $topMenuItems));
   $output = str_replace('{{topmenu}}', $topMenu, $output);
 
-  $output = (!empty($_SESSION['authenticated']['authUser'])) 
+  $output = (!empty($_SESSION['authenticated'])) 
     ? str_replace('{{loggedin_user}}', 
       'You are logged in. Welcome.' . $authUser->getAttribute('last')
       , $output)
