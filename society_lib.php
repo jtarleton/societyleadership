@@ -395,7 +395,7 @@ function preprocess_view() {
     'logout'=> '<a href="/member/logout">Logout</a>'
   );
 
-  if (!empty($_SESSION['authenticated']['authUser'])) {
+  if (!empty($_SESSION['authenticated'])) {
     unset($topMenuItems['login']);
   }
   else {
