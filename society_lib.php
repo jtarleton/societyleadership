@@ -385,7 +385,7 @@ function preprocess_view() {
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
 
-  $authUser = unserialize($_SESSION['authenticated']['authUser']);
+  $authUser = var_export($_SESSION['authenticated'], 1); //unserialize($_SESSION['authenticated']['authUser']);
 
 
   $topMenuItems = array(
