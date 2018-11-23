@@ -152,7 +152,8 @@ class User {
   }
 
   public static function authenticate($username, $password) {
-
+    global $ini_array;
+    die(var_dump($ini_array['admin_config']));
     $user = new User();
     $user->setAttribute('username', $username);
     $user->setAttribute('password', $password);
@@ -210,6 +211,7 @@ class User {
  *   The Controller makes requests to the Service layer without passing in arguments. 
  */
 function preprocess_view() {
+  global $ini_array;
   //clear session values.
   $_SESSION['flash_msgs'] = null;
   $_SESSION['post'] = null;
@@ -217,8 +219,6 @@ function preprocess_view() {
   $validator = new \SocietyLeadership\Validator();
   $validator->setAttribute('executed', null);
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
-  // Get a DB connection represented by a PDO instance.
-  //$pdo = \SocietyLeadership\SocietyDB::getInstance();
 
   // Preprocess template/view placeholders with dynamic values
   $output = get_view();
@@ -241,8 +241,8 @@ function preprocess_view() {
         !empty($_SESSION['post']['username_login']) 
           && !empty($_SESSION['post']['username_password'])
       ) {
-        $authUser = 1; ////User::authenticate($_SESSION['post']['username_login'], 
-          //$_SESSION['post']['username_password']);
+        $authUser = User::authenticate($_SESSION['post']['username_login'], 
+          $_SESSION['post']['username_password']);
         if ($authUser) {
           $_SESSION['authUser'] = $authUser;
           $_SESSION['authenticated'] = true;
@@ -396,7 +396,7 @@ function render_view() {
 		break;
   case '/member/logout':
     $_SESSION['authenticated'] = null;
-    $_SESSION['authUser'] = null;
+    $_SESSION['authenticated']['authuser'] = null;
     echo preprocess_view();
     break;
 	case '/report/members':
