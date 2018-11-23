@@ -214,9 +214,25 @@ function preprocess_view() {
   if (!empty($req->post)) {
     // Validate request data - error if incorrect.
     $validator = new \SocietyLeadership\Validator();
+    $candidateUser = new User();
+    $candidateUser->setAttribute('username',$req->post['username']);
+    $candidateUser->setAttribute('email',$req->post['email']);
+    
     if (!$validator->validateStringEmail($req->post['email'])) {
       $_SESSION['flash_msgs'][] = 'Invalid email.';
     } 
+    elseif (!$validator->validateStringLength($req->post['email'])) {
+      $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
+    }
+    elseif (!$validator->validateUserNoneExists($candidateUser)) {
+      $_SESSION['flash_msgs'][] = 'Invalid user input. This user already exists.';
+    }
+    elseif (!$validator->validateStringNotEmpty($req->post['first'])) {
+      $_SESSION['flash_msgs'][] = 'First name is a required field.';
+    }
+    elseif (!$validator->validateStringNotEmpty($req->post['last'])) {
+      $_SESSION['flash_msgs'][] = 'Last name is a required field.';
+    }
     else {
       //Add new user by calling saveNew on a User instance
       if (User::doInsert(
@@ -230,7 +246,7 @@ function preprocess_view() {
           )
         )
       ) {
-        $_SESSION['flash_msgs'][] = 'Added user.'; 
+        $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
       }
       else {
         $_SESSION['flash_msgs'][] = 'Error adding user.'; 

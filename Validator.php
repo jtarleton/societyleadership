@@ -41,11 +41,24 @@ class Validator {
 	 */
 	public function validateUserNoneExists(User $user) {
 		// check the user does not already exist in the DB
-		// assume the user may exist
-		$noneExists = false;
+		
+		$foundUsers = \SocietyLeadership\User::findByCriteria(
+			array('username' => $user->username)
+		);
+		if (!empty($foundUsers)) {
+			return false;
+		}
 
-		// if not found, set to true. 
-		return $noneExists;
+		$foundUsers = \SocietyLeadership\User::findByCriteria(
+			array('email' => $user->email)
+		);
+
+		if (!empty($foundUsers)) {
+			return false;
+		}
+
+		// if not found by either username or email
+		return true; 
 
 	}
 }
