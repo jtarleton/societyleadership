@@ -265,6 +265,10 @@ function preprocess_view() {
       ) {
         $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
         $output = str_replace('{{username}}', '', $output);
+        $output = str_replace('{{first}}', '', $output);
+        $output = str_replace('{{last}}', '', $output);
+        $output = str_replace('{{password}}', '', $output);
+        $output = str_replace('{{email}}', '', $output);
       }
       else {
         $_SESSION['flash_msgs'][] = 'Error adding user.'; 
