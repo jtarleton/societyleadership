@@ -207,6 +207,7 @@ function preprocess_view() {
 
   // Always filter raw request data
   foreach($_POST as $k => $v) {
+    $v = trim($v);
     $req->post[$k] = strip_tags($v);
   }
 
@@ -255,11 +256,22 @@ function preprocess_view() {
   
   // Preprocess template/view placeholders with dynamic values
   $output = get_view();
+
+  // Display all flash messages in the session.
   $output = str_replace('{{flash_msgs}}', implode('<br />', $_SESSION['flash_msgs']), $output);
+
+  // Display member table
   $output = str_replace('{{members}}', $members, $output);
+
+  // Display search result by user email.
   if (!empty($foundUsers)) {
     $foundUser = current($foundUsers);
-    $output = str_replace('{{search_result}}', $foundUser->getAttribute('last'), $output);
+    $output = str_replace('{{search_result}}', 
+        sprintf('Found 
+          user  matching <b>%s</b>: <ul><li>%s</li></ul>', 
+          $req->post['search_str'],
+          $foundUser->getAttribute('last')
+        ), $output);
   }
   else {
     $output = str_replace('{{search_result}}', '', $output); 
