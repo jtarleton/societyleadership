@@ -290,11 +290,13 @@ function preprocess_view() {
       array('email' => $req->post['search_str'])
     );
     
-    if (!empty($foundUsers)) {
-      $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
-    }    
-    else {
-      $_SESSION['flash_msgs'][] = sprintf('No user found for %s.', $req->post['search_str']);
+    if (!empty($req->post['search_str'])) {
+      if (!empty($foundUsers)) {
+        $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
+      }    
+      else {
+        $_SESSION['flash_msgs'][] = sprintf('No user found for %s.', $req->post['search_str']);
+      } 
     }
   }
 
