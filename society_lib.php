@@ -402,7 +402,7 @@ function preprocess_view() {
     unset($topMenuItems['logout']);
   }
 
-  $topMenu = sprintf('<ul><li>%s</ul>', implode('</li>', $topMenuItems));
+  $topMenu = sprintf('<ul><li>%s</li></ul>', implode('</li><li>', $topMenuItems));
   $output = str_replace('{{topmenu}}', $topMenu, $output);
 
   $output = (!empty($_SESSION['authenticated']['authUser'])) 
