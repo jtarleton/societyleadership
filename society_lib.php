@@ -155,7 +155,7 @@ class User {
     global $ini_array;
     $user = new User();
     $storedUsername = base64_decode($ini_array['first_section']['admin_config']['username']);
-    $storedPassword = base64_decode($ini_array['first_section']['admin_config']['username']);
+    $storedPassword = base64_decode($ini_array['first_section']['admin_config']['password']);
     die(var_dump($storedPassword));
     $user->setAttribute('username', $username);
     $user->setAttribute('password', $password);
