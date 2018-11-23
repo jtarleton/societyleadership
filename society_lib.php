@@ -135,7 +135,7 @@ function preprocess_view() {
   $pdo = \SocietyLeadership\SocietyDB::getInstance();
 
   // Do something with the request - run validators, query DB, etc.
-  $req = new stdClass;
+  $req = new \stdClass;
   $req->request = $_REQUEST;
   $req->get = $_GET;
   $req->post = $_POST;
