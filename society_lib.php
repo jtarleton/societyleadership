@@ -246,10 +246,17 @@ function preprocess_view() {
         $_SESSION['flash_msgs'][] = 'Last name is a required field.';
       } 
 
-        // Display request as default values if validation fails.
+      // Display request as default values if validation fails.
       $output = str_replace('{{username}}', 
-        $_SESSION['post']['username'], $output);
-
+      $_SESSION['post']['username'], $output);
+      $output = str_replace('{{first}}', 
+      $_SESSION['post']['first'], $output);
+      $output = str_replace('{{last}}', 
+      $_SESSION['post']['last'], $output);
+      $output = str_replace('{{password}}', 
+      $_SESSION['post']['password'], $output);
+      $output = str_replace('{{email}}', 
+      $_SESSION['post']['email'], $output);
     }
     else {
       //Add new user by calling saveNew on a User instance
