@@ -242,7 +242,7 @@ function preprocess_view() {
           && !empty($_SESSION['post']['username_password'])
       ) {
         $authUser = User::authenticate($_SESSION['post']['username_login'], 
-          //$_SESSION['post']['username_password']);
+          $_SESSION['post']['username_password']);
         if ($authUser instanceof User) {
           $_SESSION['authenticated'] = true;
           $_SESSION['authenticated']['authUser'] = serialize($authUser);
