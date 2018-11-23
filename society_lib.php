@@ -64,7 +64,8 @@ class SocietyDB
  */
 class User {
 
-	private $username, 
+	private $pdo, 
+    $username, 
 		$password, 
 		$first, 
 		$last, 
@@ -74,7 +75,7 @@ class User {
 	 * Constructor
 	 */
 	public function __construct() {
-
+    $this->pdo = \SocietyLeadership\SocietyDB::getInstance();
 	}
 
 	/**
@@ -85,6 +86,10 @@ class User {
 			$this->$k = $v;
 		}
 	}
+
+  public function setAttribute($attr, $value) {
+    $this->$attr = $value;
+  }
 
 	/**
 	 * @param string
@@ -116,6 +121,51 @@ class User {
 		}
 		return $users;
 	}
+
+  /**
+   * @param array
+   * @return bool
+   */
+  public static function doInsert($data) {
+    $user = new User();
+    foreach ($data as $k=>$v) {
+      $user->setAttribute($k, $v);
+    }
+    return $user->saveNew();
+  }
+
+  /**
+   * @return Bool
+   */
+  public function saveNew() {
+  
+      $stmt = $this->pdo->prepare('INSERT INTO user (username, 
+        first, 
+        last, 
+        password, 
+        email, 
+        role, 
+        created
+        ) VALUES(:username,
+        :first,
+        :last,
+        :password,
+        :email,
+        :role,
+        :created
+      )');
+      $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+      $stmt->bindValue(':first', $this->first, PDO::PARAM_STR);
+      $stmt->bindValue(':last', $this->last, PDO::PARAM_STR);
+      $stmt->bindValue(':password', $this->password, PDO::PARAM_STR);
+      $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+      $stmt->bindValue(':role', 'user', PDO::PARAM_STR);
+      $stmt->bindValue(':created', date('Y-m-d H:i:s'), 
+        PDO::PARAM_STR);
+      $stmt->execute();
+      $inserted = $stmt->rowCount();
+      return ($inserted > 0);
+  }
 }
 
 
@@ -142,11 +192,29 @@ function preprocess_view() {
   $req->post = $_POST;
 
   $validator = new \SocietyLeadership\Validator();
-  if(!empty($req->post)) {
+  if (!empty($req->post)) {
     // Validate request data - error if incorrect.
     if (!$validator->validateStringEmail($req->post['email'])) {
       $_SESSION['flash_msgs'][] = 'Invalid email.';
     } 
+
+    //Add new user by calling saveNew on a User instance
+    if (User::doInsert(
+        array(
+          'username'=>$req->post['username'],
+          'first'=>$req->post['first'],
+          'last'=>$req->post['last'],
+          'password'=>$req->post['password'],
+          'email'=>$req->post['email']
+
+        )
+      )
+    ) {
+      $_SESSION['flash_msgs'][] = 'Added user.'; 
+    }
+    else {
+      $_SESSION['flash_msgs'][] = 'Error adding user.'; 
+    }
   }
 
   // Call data model for dynamic view data based on request
