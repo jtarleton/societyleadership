@@ -7,10 +7,12 @@
     </style>
 </head>
 <body>
-     <div id="topmenu">
+     <div id="topmenu">  {{loggedin_user}}
     <ul>
         <li><a href="/report/members">Members List</a></li>
         <li><a href="/member/sign-up">Sign-up</a></li>
+        <li><a href="/member/login">Login</a></li>
+        <li><a href="/member/logout">Logout</a></li>
     </ul>
 </div>
 <div class="container">
@@ -28,11 +30,11 @@ e. Email address - validate input for common email address formats
 <fieldset>
     <legend>Sign-Up</legend>
     <form action="/member/sign-up" method="POST">
-        <label for="username">Username <input name="username" type="text" placeholder="Username" value="{{username}}"></input></label>
-        <label for="password">Password <input name="password" type="password" placeholder="Password" value="{{password}}"></input></label>
-        <label for="first">First name <input name="first" type="text" placeholder="First Name" value="{{first}}"></input></label>
-        <label for="last">Last name <input name="last" type="text" placeholder="Last Name" value="{{last}}"></input></label>
-        <label for="email">Email <input name="email" type="text" placeholder="jane@domain.com" value="{{email}}"></input></label>
+        <label for="username">Username <input name="username" type="text" placeholder="" value="{{username}}"></input></label>
+        <label for="password">Password <input name="password" type="password" placeholder="" value="{{password}}"></input></label>
+        <label for="first">First name <input name="first" type="text" placeholder="" value="{{first}}"></input></label>
+        <label for="last">Last name <input name="last" type="text" placeholder="" value="{{last}}"></input></label>
+        <label for="email">Email <input name="email" type="text" placeholder="" value="{{email}}"></input></label>
         <input type="submit" value="Sign Up"></input>
     </form>
 </fieldset>

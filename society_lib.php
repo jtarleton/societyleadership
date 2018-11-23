@@ -151,6 +151,19 @@ class User {
     return $user->saveNew();
   }
 
+  public static function authenticate($username, $password) {
+
+    $user = new User();
+    $user->setAttribute('username', $username);
+    $user->setAttribute('password', $password);
+    if ($user->getAttribute('username') === 'jtarleton'
+      && $user->getAttribute('password') === 'jtarleton'
+    ) {
+      return $user;
+    }
+    return false;
+  }
+
   /**
    * @return Bool
    */
@@ -200,6 +213,11 @@ function preprocess_view() {
   //clear session values.
   $_SESSION['flash_msgs'] = null;
   $_SESSION['post'] = null;
+
+  if ($_GET['logout']) {
+    $_SESSION['authenticated'] = null;
+  }
+
   $validator = new \SocietyLeadership\Validator();
   $validator->setAttribute('executed', null);
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
@@ -220,6 +238,21 @@ function preprocess_view() {
 
   if (!empty($req->post)) {
     $_SESSION['post'] = $req->post;
+
+    if (empty($_SESSION['authenticated'])) {
+      if (
+        !empty($_SESSION['post']['username_login']) 
+          && !empty($_SESSION['post']['username_password'])
+      ) {
+        $authUser = User::authenticate($_SESSION['post']['username_login'], 
+          $_SESSION['post']['username_password']);
+        if ($authUser) {
+          $_SESSION['authenticated']['user'] = $authUser;
+          $_SESSION['authenticated'] = true;
+        }
+      }
+    }
+
     // Validate request data - error if incorrect.
 
     $candidateUser = new User();
@@ -338,7 +371,9 @@ function preprocess_view() {
   $output = str_replace('{{last}}', '', $output);
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
-
+  $output = (!empty($_SESSION['authenticated']['user'])) 
+    ? str_replace('{{loggedin_user}}', $_SESSION['authenticated']['user']->getAttribute('last'), $output) 
+    : str_replace('{{loggedin_user}}', '', $output;
   return $output;
 }
 
@@ -388,6 +423,9 @@ function get_view() {
         switch($requestedRoute) {
                 case '/member/sign-up':
                         include(__DIR__ . '/signup.html');
+                        break;
+                case '/member/login':
+                        include(__DIR__ . '/login.html');
                         break;
                 case '/report/members':
                 default:
