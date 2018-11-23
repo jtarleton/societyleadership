@@ -259,7 +259,7 @@ function preprocess_view() {
   $output = str_replace('{{members}}', $members, $output);
   if (!empty($foundUsers)) {
     $foundUser = current($foundUsers);
-    $output = str_replace('{{search_result}}', $foundUser->last, $output);
+    $output = str_replace('{{search_result}}', $foundUser->getAttribute('last'), $output);
   }
   else {
     $output = str_replace('{{search_result}}', '', $output); 
