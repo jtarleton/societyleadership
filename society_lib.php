@@ -235,8 +235,8 @@ function preprocess_view() {
       }
 
       if (!$validator->validateUserNoneExists($candidateUser)) {
-        $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> already exists.', 
-          $candidateUser->getAttribute('username')
+        $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> or email <b>%s</b> already exists.', 
+          $candidateUser->getAttribute('username'), $candidateUser->getAttribute('email')
         );
       }
 
