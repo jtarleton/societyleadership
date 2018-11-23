@@ -425,7 +425,7 @@ function preprocess_view() {
         $last = $userObj->getAttribute('last');
       }
     }
-    $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome ' . $last . '.');
+    $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome ' . $last . '.', $output);
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
   }
   else {
