@@ -403,13 +403,22 @@ function preprocess_view() {
   }
 
   $topMenu = sprintf('<ul><li>%s</li></ul>', implode('</li><li>', $topMenuItems));
+
+
   $output = str_replace('{{topmenu}}', $topMenu, $output);
 
-  $output = (!empty($_SESSION['authenticated'])) 
-    ? str_replace('{{loggedin_user}}', 
-      'You are logged in. Welcome.' 
-      , $output)
-    : str_replace('{{loggedin_user}}', '', $output);
+  $loginForm = require(__DIR__ . '/_login_form.php');
+
+  $output = str_replace('{{login_form}}', $loginForm, $output);
+ 
+  if (!empty($_SESSION['authenticated'])) {
+    $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome.', $output);
+    $output = str_replace('{{login_form}}', 'You are logged in.', $output);
+  }
+  else {
+    $output = str_replace('{{loggedin_user}}', '', $output);
+    $output = str_replace('{{login_form}}', $loginForm, $output);
+  }
   return $output;
 }
 
