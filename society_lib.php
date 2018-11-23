@@ -403,7 +403,7 @@ function preprocess_view() {
   }
 
   $topMenu = sprintf('<ul><li>%s</ul>', implode('</li>', $topMenuItems));
-  $output = str_replace('{{topmenu}}', $topMenuItems, $output);
+  $output = str_replace('{{topmenu}}', $topMenu, $output);
 
   $output = (!empty($_SESSION['authenticated']['authUser'])) 
     ? str_replace('{{loggedin_user}}', 
