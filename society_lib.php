@@ -154,11 +154,13 @@ class User {
   public static function authenticate($username, $password) {
     global $ini_array;
     $user = new User();
-
+    $storedUsername = base64_decode($ini_array['first_section']['admin_config']['username']);
+    $storedPassword = base64_decode($ini_array['first_section']['admin_config']['username']);
+    die(var_dump($storedPassword));
     $user->setAttribute('username', $username);
     $user->setAttribute('password', $password);
-    if ($user->getAttribute('username') ===  base64_decode($ini_array['first_section']['admin_config']['username'])
-      && $user->getAttribute('password') === base64_decode($ini_array['first_section']['admin_config']['password'])
+    if ($user->getAttribute('username') === $storedUsername)
+      && $user->getAttribute('password') === $storedPassword)
     ) {
       return $user;
     }
