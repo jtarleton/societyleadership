@@ -259,29 +259,29 @@ function preprocess_view() {
       $output = str_replace('{{password}}', $_SESSION['post']['password'], $output);
       $output = str_replace('{{email}}', $_SESSION['post']['email'], $output);
     }
-    else {
-      //Add new user by calling saveNew on a User instance
-      if (User::doInsert(
-          array(
-            'username' => $req->post['username'],
-            'first' => $req->post['first'],
-            'last' => $req->post['last'],
-            'password' => $req->post['password'],
-            'email' => $req->post['email']
-          )
+    
+    //Add new user by calling saveNew on a User instance
+    if (User::doInsert(
+        array(
+          'username' => $req->post['username'],
+          'first' => $req->post['first'],
+          'last' => $req->post['last'],
+          'password' => $req->post['password'],
+          'email' => $req->post['email']
         )
-      ) {
-        $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
-        $output = str_replace('{{username}}', '', $output);
-        $output = str_replace('{{first}}', '', $output);
-        $output = str_replace('{{last}}', '', $output);
-        $output = str_replace('{{password}}', '', $output);
-        $output = str_replace('{{email}}', '', $output);
-      }
-      else {
-        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
-      } 
+      )
+    ) {
+      $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
+      $output = str_replace('{{username}}', '', $output);
+      $output = str_replace('{{first}}', '', $output);
+      $output = str_replace('{{last}}', '', $output);
+      $output = str_replace('{{password}}', '', $output);
+      $output = str_replace('{{email}}', '', $output);
     }
+    else {
+      $_SESSION['flash_msgs'][] = 'Error adding user.'; 
+    } 
+    
     // Search result by email
     $foundUsers = \SocietyLeadership\User::findByCriteria(
       array('email' => $req->post['search_str'])
