@@ -165,7 +165,9 @@ class User {
    */
   public static function authenticate($username, $password) {
     global $ini_array;
-    $user = new User();
+    $username = trim($username);
+    $password = trim($password);
+
     $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
     $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
     $foundUsers = \SocietyLeadership\User::findByCriteria(
@@ -268,7 +270,7 @@ function preprocess_view() {
           $_SESSION['flash_msgs'][] = 'Invalid credentials.';
         }
         else {
-          die('Unexpected error in User::authenticate');
+          throw new Exception('Unexpected error in User::authenticate');
         }
       }
     }
@@ -392,8 +394,7 @@ function preprocess_view() {
   $output = str_replace('{{password}}', '', $output);
   $output = str_replace('{{email}}', '', $output);
 
-  $authUser = var_export($_SESSION['authenticated'], 1); //unserialize($_SESSION['authenticated']['authUser']);
-
+ 
 
   $topMenuItems = array(
     'members'=> '<a href="/report/members">Members List</a>',
@@ -417,7 +418,14 @@ function preprocess_view() {
 
   if (!empty($_SESSION['authenticated'])) {
     $loginForm = '';
-    $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome.', $output);
+    if (!empty($_SESSION['authenticated']['authUser'])) {
+      $userObj = unserialize($_SESSION['authenticated']['authUser']); 
+      $last = '';
+      if($userObj instanceof User) {
+        $last = $userObj->getAttribute('last');
+      }
+    }
+    $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome ', $last . '.');
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
   }
   else {
