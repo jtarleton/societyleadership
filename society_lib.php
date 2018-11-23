@@ -293,6 +293,9 @@ function preprocess_view() {
     if (!empty($foundUsers)) {
       $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
     }    
+    else {
+      $_SESSION['flash_msgs'][] = sprintf('No user found for %s.', $req->post['search_str']);
+    }
   }
 
   // Call data model for dynamic view data based on request
