@@ -5,11 +5,9 @@ class Validator {
 	private $executed;
 
 	public function __construct() {
-		$this->executed = false;
 	}
 	public function setAttribute($attr, $value) {
 		$this->$attr = $value;
-
 	}
 	/**
 	 * @return mixed

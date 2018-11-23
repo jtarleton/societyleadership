@@ -221,7 +221,7 @@ function preprocess_view() {
   if (!empty($req->post)) {
     $_SESSION['post'] = $req->post;
     // Validate request data - error if incorrect.
-    $validator = new \SocietyLeadership\Validator();
+
     $candidateUser = new User();
     $candidateUser->setAttribute('username', $req->post['username']);
     $candidateUser->setAttribute('email', $req->post['email']);
