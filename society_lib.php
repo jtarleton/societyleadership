@@ -206,9 +206,6 @@ function preprocess_view() {
   $req = new \stdClass;
 
   // Always filter raw request data
-  foreach($_GET as $k => $v) {
-    $req->get[$k] = strip_tags($v);
-  }
   foreach($_POST as $k => $v) {
     $req->post[$k] = strip_tags($v);
   }
@@ -244,10 +241,10 @@ function preprocess_view() {
   $allUsers = \SocietyLeadership\User::findByCriteria(array());
 
   $foundUsers = \SocietyLeadership\User::findByCriteria(
-    array('email' => $req->get['search_str'])
+    array('email' => $req->post['search_str'])
   );
   if (!empty($foundUsers)) {
-    $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->get['search_str']);
+    $_SESSION['flash_msgs'][] = sprintf('Found user matching %s.', $req->post['search_str']);
   }
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
 
