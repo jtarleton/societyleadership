@@ -159,8 +159,8 @@ class User {
     die(var_dump($storedPassword));
     $user->setAttribute('username', $username);
     $user->setAttribute('password', $password);
-    if ($user->getAttribute('username') === $storedUsername)
-      && $user->getAttribute('password') === $storedPassword)
+    if ($user->getAttribute('username') === $storedUsername
+      && $user->getAttribute('password') === $storedPassword
     ) {
       return $user;
     }
