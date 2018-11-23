@@ -241,12 +241,12 @@ function preprocess_view() {
         !empty($_SESSION['post']['username_login']) 
           && !empty($_SESSION['post']['username_password'])
       ) {
-        $authUser = 1; 
-        //User::authenticate($_SESSION['post']['username_login'], 
+        $authUser = User::authenticate($_SESSION['post']['username_login'], 
           //$_SESSION['post']['username_password']);
-        if ($authUser) {
-          $_SESSION['authenticated']['authUser'] = serialize($authUser);
+        if ($authUser instanceof User) {
           $_SESSION['authenticated'] = true;
+          $_SESSION['authenticated']['authUser'] = serialize($authUser);
+         
         }
       }
     }
