@@ -162,6 +162,7 @@ class User {
     if ($user->getAttribute('username') === $storedUsername
       && $user->getAttribute('password') === $storedPassword
     ) {
+      die(var_dump($user));
       return $user;
     }
     return false;
