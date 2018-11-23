@@ -28,11 +28,11 @@ e. Email address - validate input for common email address formats
 <fieldset>
     <legend>Sign-Up</legend>
     <form action="/member/sign-up" method="POST">
-        <label for="username">Username <input name="username" type="text" placeholder="Username"></input></label>
-        <label for="password">Password <input name="password" type="password" placeholder="Password"></input></label>
-        <label for="first">First name <input name="first" type="text" placeholder="First Name"></input></label>
-        <label for="last">Last name <input name="last" type="text" placeholder="Last Name"></input></label>
-        <label for="email">Email <input name="email" type="text" placeholder="jane@domain.com"></input></label>
+        <label for="username">Username <input name="username" type="text" placeholder="Username" value="{{username}}"></input></label>
+        <label for="password">Password <input name="password" type="password" placeholder="Password" value="{{password}}"></input></label>
+        <label for="first">First name <input name="first" type="text" placeholder="First Name" value="{{first}}"></input></label>
+        <label for="last">Last name <input name="last" type="text" placeholder="Last Name" value="{{last}}"></input></label>
+        <label for="email">Email <input name="email" type="text" placeholder="jane@domain.com" value="{{email}}"></input></label>
         <input type="submit" value="Sign Up"></input>
     </form>
 </fieldset>

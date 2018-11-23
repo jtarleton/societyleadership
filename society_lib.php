@@ -201,7 +201,10 @@ function preprocess_view() {
   $_SESSION['flash_msgs'] = null;
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   // Get a DB connection represented by a PDO instance.
-  $pdo = \SocietyLeadership\SocietyDB::getInstance();
+  //$pdo = \SocietyLeadership\SocietyDB::getInstance();
+
+  // Preprocess template/view placeholders with dynamic values
+  $output = get_view();
 
   // Do something with the request - run validators, query DB, etc.
   $req = new \stdClass;
@@ -239,6 +242,11 @@ function preprocess_view() {
       if (!$validator->validateStringNotEmpty($req->post['last'])) {
         $_SESSION['flash_msgs'][] = 'Last name is a required field.';
       } 
+
+        // Display request as default values if validation fails.
+      $output = str_replace('
+      {{username}}', $req->post['username'], $output);
+
     }
     else {
       //Add new user by calling saveNew on a User instance
@@ -254,6 +262,7 @@ function preprocess_view() {
         )
       ) {
         $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', $req->post['username']); 
+        $output = str_replace('{{username}}', '', $output);
       }
       else {
         $_SESSION['flash_msgs'][] = 'Error adding user.'; 
@@ -279,8 +288,6 @@ function preprocess_view() {
   }
   $members .= '</tbody></table>';
   
-  // Preprocess template/view placeholders with dynamic values
-  $output = get_view();
 
   // Display all flash messages in the session.
   $output = str_replace('{{flash_msgs}}', implode('<br />', $_SESSION['flash_msgs']), $output);
