@@ -200,7 +200,8 @@ function preprocess_view() {
   //clear session values.
   $_SESSION['flash_msgs'] = null;
   $_SESSION['post'] = null;
-
+  $validator = new \SocietyLeadership\Validator();
+  $validator->setAttribute('executed', false);
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
   // Get a DB connection represented by a PDO instance.
   //$pdo = \SocietyLeadership\SocietyDB::getInstance();
@@ -222,41 +223,41 @@ function preprocess_view() {
     // Validate request data - error if incorrect.
     $validator = new \SocietyLeadership\Validator();
     $candidateUser = new User();
-    $candidateUser->setAttribute('username',$req->post['username']);
-    $candidateUser->setAttribute('email',$req->post['email']);
-    if (!$validator->executed()) {
+    $candidateUser->setAttribute('username', $req->post['username']);
+    $candidateUser->setAttribute('email', $req->post['email']);
+    if (!$validator->getAttribute('executed')) {
       if (!$validator->validateStringEmail($req->post['email'])) {
         $_SESSION['flash_msgs'][] = 'Invalid email.';
       } 
+
       if (!$validator->validateStringLength($req->post['password'])) {
         $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
       }
+
       if (!$validator->validateUserNoneExists($candidateUser)) {
         $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> already exists.', 
           $candidateUser->getAttribute('username')
         );
       }
+
       if (!$validator->validateStringNotEmpty($req->post['username'])) {
         $_SESSION['flash_msgs'][] = 'Username is a required field.';
       } 
+
       if (!$validator->validateStringNotEmpty($req->post['first'])) {
         $_SESSION['flash_msgs'][] = 'First name is a required field.';
       }
+
       if (!$validator->validateStringNotEmpty($req->post['last'])) {
         $_SESSION['flash_msgs'][] = 'Last name is a required field.';
       } 
 
       // Display request as default values if validation fails.
-      $output = str_replace('{{username}}', 
-      $_SESSION['post']['username'], $output);
-      $output = str_replace('{{first}}', 
-      $_SESSION['post']['first'], $output);
-      $output = str_replace('{{last}}', 
-      $_SESSION['post']['last'], $output);
-      $output = str_replace('{{password}}', 
-      $_SESSION['post']['password'], $output);
-      $output = str_replace('{{email}}', 
-      $_SESSION['post']['email'], $output);
+      $output = str_replace('{{username}}', $_SESSION['post']['username'], $output);
+      $output = str_replace('{{first}}', $_SESSION['post']['first'], $output);
+      $output = str_replace('{{last}}', $_SESSION['post']['last'], $output);
+      $output = str_replace('{{password}}', $_SESSION['post']['password'], $output);
+      $output = str_replace('{{email}}', $_SESSION['post']['email'], $output);
     }
     else {
       //Add new user by calling saveNew on a User instance

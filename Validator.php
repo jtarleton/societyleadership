@@ -2,16 +2,20 @@
 namespace SocietyLeadership;
 
 class Validator {
-	
+	private $executed;
 
 	public function __construct() {
 		$this->executed = false;
 	}
+	public function setAttribute($attr, $value) {
+		$this->$attr = $value;
+
+	}
 	/**
-	 * @return Boolean
+	 * @return mixed
 	 */
-	public function executed() {
-		return $this->executed;
+	public function getAttribute($attr) {
+		return $this->$attr;
 	}
 	/**
 	 * @param string
