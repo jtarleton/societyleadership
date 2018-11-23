@@ -1,7 +1,7 @@
 <?php
 
 //Front controller for societyleadership
-
+require(__DIR__ . '/Validator.php');
 require(__DIR__ . '/society_lib.php');
 
 // /member/sign-up
