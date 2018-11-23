@@ -214,10 +214,6 @@ function preprocess_view() {
   $_SESSION['flash_msgs'] = null;
   $_SESSION['post'] = null;
 
-  //if ($_GET['logout'] == true) {
-   // $_SESSION['authenticated'] = null;
-  //}
-
   $validator = new \SocietyLeadership\Validator();
   $validator->setAttribute('executed', null);
   $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
@@ -398,6 +394,11 @@ function render_view() {
     case '/member/sign-up':
 		echo preprocess_view();
 		break;
+  case '/member/logout':
+    $_SESSION['authenticated'] = null;
+    $_SESSION['authUser'] = null;
+    echo preprocess_view();
+    break;
 	case '/report/members':
 	default:
 		echo preprocess_view();
@@ -429,6 +430,9 @@ function get_view() {
         switch($requestedRoute) {
                 case '/member/sign-up':
                         include(__DIR__ . '/signup.html');
+                        break;
+                case '/member/logout':
+                        include(__DIR__ . '/view.html');
                         break;
                 case '/member/login':
                         include(__DIR__ . '/login.html');
