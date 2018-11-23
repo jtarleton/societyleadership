@@ -63,8 +63,8 @@ class SocietyDB
  * User
  */
 class User {
-
-	private $pdo, 
+  private static $pdo;
+	private 
     $username, 
 		$password, 
 		$first, 
@@ -75,16 +75,8 @@ class User {
 	 * Constructor
 	 */
 	public function __construct() {
-    $this->pdo = \SocietyLeadership\SocietyDB::getInstance();
+    self::$pdo = \SocietyLeadership\SocietyDB::getInstance();
 	}
-
-  public function __sleep() { 
-    $this->pdo = null;
-  }
-
-  public function __wakeup() {
-    $this->pdo = \SocietyLeadership\SocietyDB::getInstance();
-  }
 
 	/**
 	 * @param array
@@ -179,8 +171,8 @@ class User {
    * @return Bool
    */
   public function saveNew() {
-  
-      $stmt = $this->pdo->prepare('INSERT INTO user (username, 
+      $pdo = \SocietyLeadership\SocietyDB::getInstance();
+      $stmt = $pdo->prepare('INSERT INTO user (username, 
         first, 
         last, 
         password, 
