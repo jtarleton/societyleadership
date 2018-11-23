@@ -474,12 +474,16 @@ function get_view() {
   $requestedRoute = $_SERVER['REQUEST_URI'];
   //start output buffering
   ob_start();
+  $isAdmin = false;
   
   //Unserialize user from session...check privilege.
-  
-  $userObj = $_SESSION['authenticated']['authUser'];
-  $isAdmin = true;
-  if($userObj instanceof User){
+  if (!empty($_SESSION['authenticated']['authUser'])) {
+    $userObj = unserialize($_SESSION['authenticated']['authUser']); 
+  }
+ 
+  if ($userObj instanceof User) {
+    die(var_dump($userObj));
+    $isAdmin = true;
     $isAdmin = $_SESSION['authenticated']['authUser']->isAdmin(); 
   }
   
