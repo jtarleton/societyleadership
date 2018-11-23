@@ -110,10 +110,27 @@ class User {
 	 */
 	public function findByCriteria(array $criteria = array()) {
 		$pdo = \SocietyLeadership\SocietyDB::getInstance();
-		//Find by username
-		//$where = ' WHERE username = :username';
-		$stmt = $pdo->prepare('SELECT * FROM user');
-		//$stmt->bindValue(':username', $criteria['username'], PDO::PARAM_STR);
+    // Find all 
+    $sql = 'SELECT * FROM user';
+		
+    // Or find by a single criteria (username OR email).
+    // (Presently this method accepts but 
+    // one criterion at a time.)
+    // To search multiple criteria
+    // please revise this prepared statment and 
+    // remove calls to key() and current()
+
+    if (!empty($criteria)) {
+      $criteria['field'] = current($criteria);
+		  $sql   .= ' WHERE ';
+      $field  = key($criteria);
+      $sql   .= sprintf('%s = :field', key($criteria)); 
+    }
+		
+    $stmt = $pdo->prepare($sql);
+		if (!empty($criteria)) {
+      $stmt->bindValue(':field', $criteria[$field], PDO::PARAM_STR);
+    }
 		$stmt->execute();
 		$users = array();
 		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
@@ -187,7 +204,7 @@ function preprocess_view() {
 
   // Do something with the request - run validators, query DB, etc.
   $req = new \stdClass;
-  
+
   // Always filter raw request data
   foreach($_POST as $k => $v) {
     $req->post[$k] = strip_tags($v);
@@ -221,8 +238,14 @@ function preprocess_view() {
   }
 
   // Call data model for dynamic view data based on request
-  $allUsers = \SocietyLeadership\User::findByCriteria(array(), true);
+  $allUsers = \SocietyLeadership\User::findByCriteria(array());
+
+  $foundUser = \SocietyLeadership\User::findByCriteria(
+    array('email' => $req->get['search_str'])
+  );
+
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
+  
   foreach ($allUsers as $user) {
   	$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
   }
@@ -232,7 +255,9 @@ function preprocess_view() {
   $output = get_view();
   $output = str_replace('{{flash_msgs}}', implode('<br />', $_SESSION['flash_msgs']), $output);
   $output = str_replace('{{members}}', $members, $output);
-
+  $output = (isset($foundUser)) 
+    ? str_replace('{{search_result}}', $foundUser->last, $output) 
+    : str_replace('{{search_result}}', '', $output);
   return $output;
 }
 
