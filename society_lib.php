@@ -142,9 +142,11 @@ function preprocess_view() {
   $req->post = $_POST;
 
   $validator = new \SocietyLeadership\Validator();
-  // Validate request data - error if incorrect.
-  if (!$validator->validateStringEmail($req->post['email'])) {
-    $_SESSION['flash_msgs'][] = 'Invalid email.';
+  if(!empty($req->post)) {
+    // Validate request data - error if incorrect.
+    if (!$validator->validateStringEmail($req->post['email'])) {
+      $_SESSION['flash_msgs'][] = 'Invalid email.';
+    } 
   }
 
   // Call data model for dynamic view data based on request
