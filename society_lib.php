@@ -327,6 +327,9 @@ function preprocess_view() {
   elseif (!empty($req->post['search_str'])) {
     $output = str_replace('{{search_result}}', sprintf('No user found for <b>%s</b>', $req->post['search_str']), $output); 
   }
+  else {
+    $output = str_replace('{{search_result}}', '', $output); 
+  }
 
   // Default values for sign up 
   // form can be empty except on submission.
