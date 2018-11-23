@@ -222,11 +222,13 @@ function preprocess_view() {
     if (!$validator->validateStringEmail($req->post['email'])) {
       $_SESSION['flash_msgs'][] = 'Invalid email.';
     } 
-    elseif (!$validator->validateStringLength($req->post['email'])) {
+    elseif (!$validator->validateStringLength($req->post['password'])) {
       $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
     }
     elseif (!$validator->validateUserNoneExists($candidateUser)) {
-      $_SESSION['flash_msgs'][] = 'Invalid user input. This user already exists.';
+      $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> already exists.', 
+        $candidateUser->getAttribute('username')
+      );
     }
     elseif (!$validator->validateStringNotEmpty($req->post['first'])) {
       $_SESSION['flash_msgs'][] = 'First name is a required field.';
