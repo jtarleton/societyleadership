@@ -407,13 +407,14 @@ function preprocess_view() {
 
   $output = str_replace('{{topmenu}}', $topMenu, $output);
 
-  $loginForm = require(__DIR__ . '/_login_form.php');
 
   if (!empty($_SESSION['authenticated'])) {
+    $loginForm = '';
     $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome.', $output);
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
   }
   else {
+    $loginForm = file_get_contents(__DIR__ . '/_login_form.php');
     $output = str_replace('{{loggedin_user}}', '', $output);
     $output = str_replace('{{login_form}}', $loginForm, $output);
   }
