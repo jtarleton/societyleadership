@@ -153,8 +153,8 @@ class User {
 
   public static function authenticate($username, $password) {
 
-    $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
-    die(var_dump($ini_array));
+   global $ini_array;
+    die(var_dump($ini_array['first_section']['admin_config']));
     $user = new User();
     $user->setAttribute('username', $username);
     $user->setAttribute('password', $password);
@@ -219,7 +219,7 @@ function preprocess_view() {
 
   $validator = new \SocietyLeadership\Validator();
   $validator->setAttribute('executed', null);
-  $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
+
 
   // Preprocess template/view placeholders with dynamic values
   $output = get_view();
