@@ -238,7 +238,8 @@ function preprocess_view() {
 
   if (!empty($req->post)) {
     $_SESSION['post'] = $req->post;
-
+    $_SESSION['post']['username_login'] =$req->post['username_login'];
+    $_SESSION['post']['username_password'] = $req->post['username_password'];
     if (empty($_SESSION['authenticated'])) {
       if (
         !empty($_SESSION['post']['username_login']) 
