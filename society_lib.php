@@ -256,12 +256,19 @@ function preprocess_view() {
         !empty($_SESSION['post']['username_login']) 
           && !empty($_SESSION['post']['username_password'])
       ) {
-        $_SESSION['authenticated'] = true;
+        
         $authUser = User::authenticate($_SESSION['post']['username_login'], 
           $_SESSION['post']['username_password']);
         if ($authUser instanceof User) {
+          $_SESSION['authenticated'] = true;
           $_SESSION['authenticated']['authUser'] = serialize($authUser);
          
+        }
+        elseif ($authUser === false) {
+          $_SESSION['flash_msgs'][] = 'Invalid credentials.';
+        }
+        else {
+          die('Unexpected error in User::authenticate');
         }
       }
     }
@@ -471,12 +478,12 @@ function get_view() {
   //Unserialize user from session...check privilege.
   
   $userObj = $_SESSION['authenticated']['authUser'];
-  $is_admin = true;
+  $isAdmin = true;
   if($userObj instanceof User){
-    $is_admin = $_SESSION['authenticated']['authUser']->isAdmin(); 
+    $isAdmin = $_SESSION['authenticated']['authUser']->isAdmin(); 
   }
   
-  if ($is_admin) {
+  if ($isAdmin) {
         switch($requestedRoute) {
                 case '/member/sign-up':
                         include(__DIR__ . '/signup.html');
