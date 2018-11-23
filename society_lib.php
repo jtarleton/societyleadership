@@ -421,7 +421,7 @@ function preprocess_view() {
   return $output;
 }
 
-/** ->getAttribute('last'), $output)
+/** 
  * Send HTML header and render page
  * The View's job is to translate data into a visual rendering for response to the Client (ie. web browser or other consumer). 
  * The data will be supplied primarily by the Controller 
@@ -466,7 +466,9 @@ function render_view() {
 function get_view() {
   $requestedRoute = $_SERVER['REQUEST_URI'];
   ob_start();
-  $is_admin = TRUE;
+  //Unserialize user from session...check privilege.
+  $is_admin = $_SESSION['authenticated']['authUser']->isAdmin();
+  
   if ($is_admin) {
         switch($requestedRoute) {
                 case '/member/sign-up':
@@ -485,8 +487,22 @@ function get_view() {
         }
   }
   else {
-        //Insufficient Privileges
-        include(__DIR__ . '/view.html');
+        switch($requestedRoute) {
+                case '/member/sign-up':
+                        include(__DIR__ . '/signup.html');
+                        break;
+                case '/member/logout':
+                        include(__DIR__ . '/view.html');
+                        break;
+                case '/member/login':
+                default:
+                        include(__DIR__ . '/login.html');
+                        break;
+                case '/report/members':
+                        //Insufficient Privileges
+                        include(__DIR__ . '/denied.html');
+                        break;
+        }
   }
   return ob_get_clean();
 }

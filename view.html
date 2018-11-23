@@ -19,6 +19,20 @@ and password in plain text in the readme
 
     -->
 
+<fieldset><legend>Search Members</legend>
+        <!-- 
+    This form could (and likely should) use the GET method, but this adds some complexity to the routing / mod_rewrite feature.  Using POST here only for simplicity.
+    -->
+    <form action="/report/members" method="POST">
+        <label for="search_str">By Email <input name="search_str" type="text" placeholder="jane@domain.com"></input></label>
+        <input type="submit" value="Search"></input>
+    </form>
+
+</fieldset>
+
+
+
+
     {{search_result}}
 <fieldset>
     <legend>Members</legend>
@@ -27,13 +41,7 @@ and password in plain text in the readme
     </p>
 </fieldset>
 
-    <!-- 
-    This form could (and likely should) use the GET method, but this adds some complexity to the routing / mod_rewrite feature.  Using POST here only for simplicity.
-    -->
-    <form action="/report/members" method="POST">
-        <label for="search_str">Search Users By Email <input name="search_str" type="text" placeholder="jane@domain.com"></input></label>
-        <input type="submit" value="Search"></input>
-    </form>
+
 
 </div>
 <script>
