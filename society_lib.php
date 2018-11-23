@@ -157,13 +157,13 @@ class User {
     $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
     $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
     $foundUsers = \SocietyLeadership\User::findByCriteria(
-      array('email' => $req->post['search_str'])
+      array('username' => $username)
     );
-
-    if ($user->getAttribute('username') === $storedUsername
-      && $user->getAttribute('password') === $storedPassword
+    $user = $foundUsers[$username];
+    if ($username === $storedUsername
+      && $password === $storedPassword
     ) {
-      die(var_dump($foundUsers[$username]));
+      die(var_dump($user ));
       return $user;
     }
     return false;
