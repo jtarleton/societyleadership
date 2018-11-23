@@ -244,7 +244,7 @@ function preprocess_view() {
         $authUser = User::authenticate($_SESSION['post']['username_login'], 
           $_SESSION['post']['username_password']);
         if ($authUser) {
-          $_SESSION['authUser'] = $authUser;
+          $_SESSION['authenticated']['authUser'] = $authUser;
           $_SESSION['authenticated'] = true;
         }
       }
@@ -372,7 +372,7 @@ function preprocess_view() {
     ? str_replace('{{loggedin_user}}', 
       'You are logged in. Welcome.'
 
-      . $_SESSION['authUser']
+      . $_SESSION['authenticated']['authUser']->getAttribute('last')
 
       , $output)
     : str_replace('{{loggedin_user}}', '', $output);
@@ -396,7 +396,7 @@ function render_view() {
 		break;
   case '/member/logout':
     $_SESSION['authenticated'] = null;
-    $_SESSION['authenticated']['authuser'] = null;
+    $_SESSION['authenticated']['authUser'] = null;
     echo preprocess_view();
     break;
 	case '/report/members':
