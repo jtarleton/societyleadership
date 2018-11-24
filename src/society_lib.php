@@ -15,6 +15,7 @@ function preprocess_view() {
   global $ini_array;
   //clear session values.
   $_SESSION['flash_msgs'] = null;
+  $_SESSION['login_flash_msgs'] = null;
   $_SESSION['post'] = null;
 
   $validator = new \SocietyLeadership\Validator();
@@ -51,7 +52,7 @@ function preprocess_view() {
          
         }
         elseif ($authUser === false) {
-          $_SESSION['flash_msgs'][] = 'Invalid credentials.';
+          $_SESSION['login_flash_msgs'][] = 'Invalid credentials.';
         }
         else {
           throw new Exception('Unexpected error in User::authenticate');
@@ -154,6 +155,9 @@ function preprocess_view() {
 
   // Display all flash messages in the session.
   $output = str_replace('{{flash_msgs}}', implode('<br />', $_SESSION['flash_msgs']), $output);
+
+  $output = str_replace('{{login_flash_msgs}}', implode('<br />', $_SESSION['login_flash_msgs']), $output);
+
 
   // Display member table
   $output = str_replace('{{members}}', $members, $output);
