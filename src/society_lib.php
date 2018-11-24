@@ -214,7 +214,7 @@ function preprocess_view() {
         $name = $userObj->getFullname();
       }
     }
-    $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome ' . $last . '.', $output);
+    $output = str_replace('{{loggedin_user}}', "You are logged in. Welcome $name.", $output);
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
   }
   else {
