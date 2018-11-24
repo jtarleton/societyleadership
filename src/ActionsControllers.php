@@ -41,14 +41,12 @@ class Request  {
 	 * @return object
 	 */
 	public function createFromGlobals() {
-		$request = new self;
-
 		// Always filter raw request data
 		foreach ($_POST as $k => $v) {
 			$v = trim($v);
 			$this->post[$k] = strip_tags($v);
 		}
-		return $request;
+		return $this;
 	}
 }
 

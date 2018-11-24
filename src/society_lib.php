@@ -242,20 +242,20 @@ function render_view() {
   $requestedRoute = $_SERVER['REQUEST_URI'];
   switch ($requestedRoute) {
     case '/member/sign-up':
-		echo preprocess_view();
+    $actions = new \SocietyLeadership\MemberController();
+    echo $actions->signup();
+		//echo preprocess_view();
 		break;
   case '/member/logout':
     $_SESSION['authenticated'] = null;
     $_SESSION['authUser'] = null;
-    echo preprocess_view();
-    break;
-  case 'report/members2':
-    $report = new \SocietyLeadership\ReportController();
-    echo $report->members();
+    $actions = new \SocietyLeadership\MemberController();
+    echo $actions->logout();
     break;
 	case '/report/members':
 	default:
-		echo preprocess_view();
+		$actions = new \SocietyLeadership\ReportController();
+    echo $actions->members();
 		break;
   }
 }
