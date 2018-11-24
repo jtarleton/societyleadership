@@ -218,7 +218,7 @@ function preprocess_view() {
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
   }
   else {
-    $loginForm = file_get_contents(__DIR__ . '/src/_login_form.php');
+    $loginForm = file_get_contents(__DIR__ . '/_login_form.php');
     $output = str_replace('{{loggedin_user}}', '', $output);
     $output = str_replace('{{login_form}}', $loginForm, $output);
   }
