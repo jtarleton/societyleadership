@@ -287,35 +287,35 @@ function get_view() {
   if ($isAdmin) {
         switch($requestedRoute) {
                 case '/member/sign-up':
-                        include(__DIR__ . '/src/views/signup.html');
+                        include(__DIR__ . '/views/signup.html');
                         break;
                 case '/member/logout':
-                        include(__DIR__ . '/src/views/logout.html');
+                        include(__DIR__ . '/views/logout.html');
                         break;
                 case '/member/login':
-                        include(__DIR__ . '/src/views/login.html');
+                        include(__DIR__ . '/views/login.html');
                         break;
                 case '/report/members':
                 default:
-                        include(__DIR__ . '/src/views/view.html');
+                        include(__DIR__ . '/views/view.html');
                         break;
         }
   }
   else {
         switch($requestedRoute) {
                 case '/member/sign-up':
-                        include(__DIR__ . '/src/views/signup.html');
+                        include(__DIR__ . '/views/signup.html');
                         break;
                 case '/member/logout':
-                        include(__DIR__ . '/src/views/logout.html');
+                        include(__DIR__ . '/views/logout.html');
                         break;
                 case '/member/login':
                 default:
-                        include(__DIR__ . '/src/views/login.html');
+                        include(__DIR__ . '/views/login.html');
                         break;
                 case '/report/members':
                         //Insufficient Privileges
-                        include(__DIR__ . '/src/views/denied.html');
+                        include(__DIR__ . '/views/denied.html');
                         break;
         }
   }
