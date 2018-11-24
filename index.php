@@ -12,7 +12,7 @@ require(__DIR__ . '/src/User.php');
 require(__DIR__ . '/src/Route.php');
 require(__DIR__ . '/src/Validator.php');
 require(__DIR__ . '/src/society_lib.php');
-
+require(__DIR__ . '/src/ActionsControllers.php');
 // Send output to browser
 \SocietyLeadership\render_view();
 exit(0);
