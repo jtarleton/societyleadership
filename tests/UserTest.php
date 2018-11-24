@@ -1,6 +1,6 @@
 <?php 
 declare(strict_types=1);
-require(__DIR__ .'/../society_lib.php');
+require(__DIR__ .'/../src/society_lib.php');
 
 use PHPUnit\Framework\TestCase;
 

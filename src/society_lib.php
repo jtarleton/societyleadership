@@ -1,222 +1,6 @@
 <?php 
 namespace SocietyLeadership;
 
-define('DB_DSN',  'mysql:host=127.0.0.1;dbname=societyleadership');
-define('DB_USER', 'societyleadershi');
-define('DB_PASS', 'societyleadershi');
-
-/**
- * @package SocietyLeadership
- * 
- * society_lib.php
- */
-class SocietyDB 
-{
-   
-    private static $objInstance;
-   
-    /**
-     * Class Constructor - Create a new database connection if one doesn't exist
-     * Set to private so no-one can create a new instance via ' = new SocietyDB();'
-     */
-    private function __construct() {
-    }
-   
-    /**
-     * Like the constructor, we make __clone private so nobody can clone the instance
-     */
-    private function __clone() {
-    }
-   
-    /**
-     * Returns DB instance or create initial connection
-     * @param
-     * @return $objInstance;
-     */
-    public static function getInstance() {
-           
-        if(!self::$objInstance){
-            self::$objInstance = new \PDO(DB_DSN, DB_USER, DB_PASS);
-            self::$objInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        }
-       
-        return self::$objInstance;
-   
-    }
-
-    /**
-     * Passes on any static calls to this class onto the singleton PDO instance
-     * @param $chrMethod, $arrArguments
-     * @return $mix
-     */
-    final public static function __callStatic( $chrMethod, $arrArguments ) {
-           
-        $objInstance = self::getInstance();
-       
-        return call_user_func_array(array($objInstance, $chrMethod), $arrArguments);
-       
-    } 
-}
-
-
-/**
- * User
- */
-class User {
-  private static $pdo;
-	private 
-    $username, 
-		$password, 
-		$first, 
-		$last, 
-		$email;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-    self::$pdo = \SocietyLeadership\SocietyDB::getInstance();
-	}
-
-	/**
-	 * @param array
-	 */
-	public function load(array $data) {
-		foreach ($data as $k => $v) {
-			$this->$k = $v;
-		}
-	}
-
-  /**
-   * @param string
-   * @param string
-   */
-  public function setAttribute($attr, $value) {
-    $this->$attr = $value;
-  }
-
-	/**
-	 * @param string
-	 */
-	public function getAttribute($attr) {
-		return $this->$attr;
-	}
-
-  /**
-   * @param array
-   */
-	public function factoryCreate($row) {
-		$obj = new User();
-		$obj->load($row);
-		return $obj;
-	}
-
-	/**
-	 * @param array
-	 * @return array
-	 */
-	public function findByCriteria(array $criteria = array()) {
-		$pdo = \SocietyLeadership\SocietyDB::getInstance();
-    // Find all 
-    $sql = 'SELECT * FROM user';
-		
-    // Or find by a single criteria (username OR email).
-    // (Presently this method accepts but 
-    // one criterion at a time.)
-    // To search multiple criteria
-    // please revise this prepared statment and 
-    // remove calls to key() and current()
-
-    if (!empty($criteria)) {
-      $criteria['field'] = current($criteria);
-		  $sql   .= ' WHERE ';
-      $field  = key($criteria);
-      $sql   .= sprintf('%s = :field', key($criteria)); 
-    }
-		
-    $stmt = $pdo->prepare($sql);
-		if (!empty($criteria)) {
-      $stmt->bindValue(':field', $criteria[$field], \PDO::PARAM_STR);
-    }
-		$stmt->execute();
-		$users = array();
-		while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-			$users[$row['username']] = User::factoryCreate($row);
-		}
-		return $users;
-	}
-
-  /**
-   * @param array
-   * @return bool
-   */
-  public static function doInsert($data) {
-    $user = new User();
-    foreach ($data as $k=>$v) {
-      $user->setAttribute($k, $v);
-    }
-    return $user->saveNew();
-  }
-
-  /**
-   * @param string
-   * @param string
-   * @param mix (false|User)
-   */
-  public static function authenticate($username, $password) {
-    global $ini_array;
-    $username = trim($username);
-    $password = trim($password);
-
-    $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
-    $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
-    $foundUsers = \SocietyLeadership\User::findByCriteria(
-      array('username' => $username)
-    );
-    $user = $foundUsers[$username];
-    if ($username === $storedUsername
-      && $password === $storedPassword
-    ) {
-      return $user;
-    }
-    return false;
-  }
-
-  /**
-   * @return boolean
-   */
-  public function saveNew() {
-      $pdo = \SocietyLeadership\SocietyDB::getInstance();
-      $stmt = $pdo->prepare('INSERT INTO user (username, 
-        first, 
-        last, 
-        password, 
-        email, 
-        role, 
-        created
-        ) VALUES(:username,
-        :first,
-        :last,
-        :password,
-        :email,
-        :role,
-        :created
-      )');
-      $stmt->bindValue(':username', $this->username, \PDO::PARAM_STR);
-      $stmt->bindValue(':first', $this->first, \PDO::PARAM_STR);
-      $stmt->bindValue(':last', $this->last, \PDO::PARAM_STR);
-      $stmt->bindValue(':password', $this->password, \PDO::PARAM_STR);
-      $stmt->bindValue(':email', $this->email, \PDO::PARAM_STR);
-      $stmt->bindValue(':role', 'user', \PDO::PARAM_STR);
-      $stmt->bindValue(':created', date('Y-m-d H:i:s'), 
-        \PDO::PARAM_STR);
-      $stmt->execute();
-      $inserted = $stmt->rowCount();
-      return ($inserted > 0);
-  }
-}
-
-
 /**
  * Controller
  * The Controller's job is to translate incoming requests into outgoing responses. In order to do this, the controller must take request * data and pass it into the Service layer. The service layer then returns data that the Controller injects into a View for 
@@ -358,7 +142,12 @@ function preprocess_view() {
   $members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
 
   foreach ($allUsers as $user) {
-  	$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', $user->getAttribute('first'), $user->getAttribute('last'), $user->getAttribute('username'), $user->getAttribute('email'));
+  	$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', 
+      $user->getAttribute('first'), 
+      $user->getAttribute('last'), 
+      $user->getAttribute('username'), 
+      $user->getAttribute('email')
+    );
   }
   $members .= '</tbody></table>';
   
@@ -420,16 +209,16 @@ function preprocess_view() {
     $loginForm = '';
     if (!empty($_SESSION['authUser'])) {
       $userObj = unserialize($_SESSION['authUser']); 
-      $last = '';
+      $name = '';
       if($userObj instanceof User) {
-        $last = $userObj->getAttribute('last');
+        $name = $userObj->getFullname();
       }
     }
     $output = str_replace('{{loggedin_user}}', 'You are logged in. Welcome ' . $last . '.', $output);
     $output = str_replace('{{login_form}}', 'You are logged in.', $output);
   }
   else {
-    $loginForm = file_get_contents(__DIR__ . '/_login_form.php');
+    $loginForm = file_get_contents(__DIR__ . '/src/_login_form.php');
     $output = str_replace('{{loggedin_user}}', '', $output);
     $output = str_replace('{{login_form}}', $loginForm, $output);
   }
@@ -498,35 +287,35 @@ function get_view() {
   if ($isAdmin) {
         switch($requestedRoute) {
                 case '/member/sign-up':
-                        include(__DIR__ . '/signup.html');
+                        include(__DIR__ . '/src/views/signup.html');
                         break;
                 case '/member/logout':
-                        include(__DIR__ . '/logout.html');
+                        include(__DIR__ . '/src/views/logout.html');
                         break;
                 case '/member/login':
-                        include(__DIR__ . '/login.html');
+                        include(__DIR__ . '/src/views/login.html');
                         break;
                 case '/report/members':
                 default:
-                        include(__DIR__ . '/view.html');
+                        include(__DIR__ . '/src/views/view.html');
                         break;
         }
   }
   else {
         switch($requestedRoute) {
                 case '/member/sign-up':
-                        include(__DIR__ . '/signup.html');
+                        include(__DIR__ . '/src/views/signup.html');
                         break;
                 case '/member/logout':
-                        include(__DIR__ . '/logout.html');
+                        include(__DIR__ . '/src/views/logout.html');
                         break;
                 case '/member/login':
                 default:
-                        include(__DIR__ . '/login.html');
+                        include(__DIR__ . '/src/views/login.html');
                         break;
                 case '/report/members':
                         //Insufficient Privileges
-                        include(__DIR__ . '/denied.html');
+                        include(__DIR__ . '/src/views/denied.html');
                         break;
         }
   }

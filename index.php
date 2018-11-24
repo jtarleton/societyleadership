@@ -7,6 +7,9 @@ global $ini_array;
 $ini_array = parse_ini_file(__DIR__ . '/society_leadership_config.ini', true);
 
 //load libraries
+require(__DIR__ . '/SocietyDB.php');
+require(__DIR__ . '/User.php');
+require(__DIR__ . '/Route.php');
 require(__DIR__ . '/Validator.php');
 require(__DIR__ . '/society_lib.php');
 
