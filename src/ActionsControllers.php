@@ -136,7 +136,7 @@ class MenuUtils {
 }
 
 class BaseController implements \SocietyLeadership\FlashMessage {
-	protected $request;
+	protected $request, $response;
 
 	/**
 	 * Constructor
@@ -170,6 +170,13 @@ class BaseController implements \SocietyLeadership\FlashMessage {
 }
 
 class DeniedController extends BaseController {
+		/**
+	 * Controller
+	 */
+	public function __construct() {
+		global $ini_array;
+		parent::__construct();
+	}
 } 
 
 class ReportController extends BaseController {
@@ -178,6 +185,7 @@ class ReportController extends BaseController {
 	 */
 	public function __construct() {
 		global $ini_array;
+		parent::__construct();
 	}
 
 	/**
@@ -261,6 +269,7 @@ class MemberController extends BaseController  {
 	 */
 	public function __construct() {
 		global $ini_array;
+		parent::__construct();
 	}
 
 	/**
