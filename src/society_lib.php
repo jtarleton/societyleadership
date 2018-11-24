@@ -249,6 +249,10 @@ function render_view() {
     $_SESSION['authUser'] = null;
     echo preprocess_view();
     break;
+  case 'report/members2':
+    $report = new \SocietyLeadership\ReportController();
+    echo $report->members();
+    break;
 	case '/report/members':
 	default:
 		echo preprocess_view();
