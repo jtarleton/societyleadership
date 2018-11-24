@@ -53,6 +53,17 @@ class User {
     );
   }
 
+  public function isAdmin() {
+    global $ini_array;
+    if (!empty($ini_array)) {
+      // Read credentials from INI file values.
+      $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
+      $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
+      return ($this->getAttribute('username') === $storedUsername);
+    }
+    return false;
+  }
+
   /**
    * @param array
    */

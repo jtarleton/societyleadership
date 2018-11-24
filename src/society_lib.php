@@ -284,8 +284,7 @@ function get_view() {
   }
  
   if ($userObj instanceof User) {
-    $isAdmin = true;
-    //$isAdmin = $_SESSION['authUser']->isAdmin(); 
+    $isAdmin = $userObj->isAdmin(); 
   }
   
   if ($isAdmin) {
