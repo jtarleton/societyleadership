@@ -6,43 +6,36 @@
 
     </style>
 </head>
-<body><div class="container">
-     <div id="topmenu">  {{loggedin_user}}
-    {{topmenu}}
-</div>
-
+<body>
+<div class="container">
+    <div id="topmenu">  
+        {{loggedin_user}}
+        {{topmenu}}
+    </div>
     <!-- 
 
-Make the report page visible only to an administrator account. For all others, show an
-"Insufficient privileges" page. If you implement this, include the administrator username
-and password in plain text in the readme
+    Make the report page visible only to an administrator account. For all others, show an
+    "Insufficient privileges" page. If you implement this, include the administrator username
+    and password in plain text in the readme
 
     -->
-
-<fieldset><legend>Search Members</legend>
-        <!-- 
-    This form could (and likely should) use the GET method, but this adds some complexity to the routing / mod_rewrite feature.  Using POST here only for simplicity.
-    -->
-    <form action="/report/members" method="POST">
-        <label for="search_str">By Email <input name="search_str" type="text" placeholder="jane@domain.com"></input></label>
-        <input type="submit" value="Search"></input>
-    </form>
-
-</fieldset>
-
-
-
-
+    <fieldset>
+        <legend>Search Members</legend>
+            <!-- 
+        This form could (and likely should) use the GET method, but this adds some complexity to the routing / mod_rewrite feature.  Using POST here only for simplicity.
+        -->
+        <form action="/report/members" method="POST">
+            <label for="search_str">By Email <input name="search_str" type="text" placeholder="jane@domain.com"></input></label>
+            <input type="submit" value="Search"></input>
+        </form>
+    </fieldset>
     {{search_result}}
-<fieldset>
-    <legend>Members</legend>
-    <p>
-    {{members}}
-    </p>
-</fieldset>
-
-
-
+    <fieldset>
+        <legend>Members</legend>
+        <p>
+        {{members}}
+        </p>
+    </fieldset>
 </div>
 <script>
 	function test() {
