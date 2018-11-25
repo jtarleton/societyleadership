@@ -17,7 +17,7 @@ class Request  {
 	 * @return Bool
 	 */
 	public function hasPostParameters() {
-		return !empty($_POST) ? true : false;
+		return isset($_POST) ? true : false;
 	}
 	/**
 	 * @return array
