@@ -2,200 +2,9 @@
 
 namespace SocietyLeadership;
 
-interface FlashMessage {
-	public function displayFlashMsgs();
-}
-
-class Request  {
-	/**
-	 * @var $post array
-	 */
-	private $post;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->createFromGlobals();
-	}
-	/**
-	 * @return Bool
-	 */
-	public function hasPostParameters() {
-		return !empty($_POST) ? true : false;
-	}
-	/**
-	 * @return array
-	 */
-	public function getPostParameters() {
-		if (empty($this->post)) {
-			$this->createFromGlobals();
-		}
- 		return $this->post;
-	}
-	/**
-	 * @param string
-	 * @return mixed
-	 */
-	public function getPostParameter($param) {
-		return $this->post[$param];
-	}
-	/**
-	 * @return object
-	 */
-	public function createFromGlobals() {
-		// Always filter raw request data
-		foreach ($_POST as $k => $v) {
-			$v = trim($v);
-			$this->post[$k] = strip_tags($v);
-		}
-		return $this;
-	}
-}
-
-class Response {
-	/**
-	 * @var string
-	 */
-	private $output; //the response output will be a string.
-	
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		if (!isset($this->output)) {
-			$this->output = get_view(); 
-		}
-	}
-	/**
-	 * @param string
-	 * @return mixed
-	 */
-	public function getAttribute($attr) {
-		return $this->$attr;
-	}
-	/**
-	 * @param string
-	 * @return object
-	 */
-	public function doReplace($tokenName, $replaceWith){
-		$this->output = str_replace($tokenName, $replaceWith, $this->output);
-		return $this;
-	} 
-
-	/**
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return object
-	 */
-	public function doDelimitedReplace($startDelim, $endDelim, $replaceWith) {
-		$snipped = strstr($this->output, $startDelim, $this->output);
-		$delimFragment = strstr($snipped, $endDelim, true);
-		if (strpos($this->output, $delimFragment) !== false) {
-			// now use $delimFragment as a token
-			$this->output = $this->doReplace($delimFragment, $replaceWith); 
-		}
-		return $this;
-	}
-}
-
-class MenuUtils {
-
-	/**
-	 * Add welcome text to response.
-	 */
-	public static function welcome(Response $response) {
-		if (!empty($_SESSION['authenticated'])) {
-	    $loginForm = '';
-	    if (!empty($_SESSION['authUser'])) {
-	      $userObj = unserialize($_SESSION['authUser']); 
-	      $name = '';
-	      if($userObj instanceof User) {
-	        $name = $userObj->getFullname();
-	      }
-	    }
-	    $response->doReplace('{{loggedin_user}}', "You are logged in. Welcome $name.");
-	    $response->doReplace('{{login_form}}', 'You are logged in.');
-	  }
-	  else {
-	    $loginForm = file_get_contents(__DIR__ . '/_login_form.html');
-	    $response->doReplace('{{loggedin_user}}', '');
-	    $response->doReplace('{{login_form}}', $loginForm);
-	  }
-	  return $response;	
-	}
-
-	/**
-	 * top menu
-	 */
-	public static function topMenu(Response $response) {
-		$topMenuItems = array(
-			'members'=> '<a href="/report/members">Members List</a>',
-			'signup'=> '<a href="/member/signup">Sign-up user</a>',
-			'login'=> '<a href="/member/login">Login</a>',
-			'logout'=> '<a href="/member/logout">Logout</a>'
-		);
-
-		if (!empty($_SESSION['authenticated'])) {
-			unset($topMenuItems['login']);
-		}
-		else {
-			unset($topMenuItems['logout']);
-		}
-
-		$topMenu = sprintf('<ul><li>%s</li></ul>', implode('</li><li>', $topMenuItems));
-
-		$response->doReplace('{{topmenu}}', $topMenu);
-		return $response;
-	} 
-}
-
-class BaseController implements \SocietyLeadership\FlashMessage {
-	protected $request, $response;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->request = new Request();
-		$this->response = new Response();
-	}
-
-	/**
-	 * clearSession
-	 * @return void
-	 */
-	public function clearSession() {
-		//clear session values.
-		$_SESSION['flash_msgs'] = null;
-		$_SESSION['login_flash_msgs'] = null;
-		$_SESSION['post'] = null;
-	}
-
-	/**
-	 * displayFlashMessages
-	 * @return void
-	 */
-	public function displayFlashMsgs() {
-		// Display all flash messages in the session.
-		$this->response->doReplace('{{flash_msgs}}', 
-			implode('<br />', $_SESSION['flash_msgs'])
-		);
-		$_SESSION['flash_msgs'] = null;
-	}
-}
-
-class DeniedController extends BaseController {
-		/**
-	 * Controller
-	 */
-	public function __construct() {
-		global $ini_array;
-		parent::__construct();
-	}
-} 
-
+/**
+ * ReportController
+ */
 class ReportController extends BaseController {
 	/**
 	 * Controller
@@ -218,11 +27,11 @@ class ReportController extends BaseController {
 
 		foreach ($allUsers as $user) {
 			$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', 
-		  $user->getAttribute('first'), 
-		  $user->getAttribute('last'), 
-		  $user->getAttribute('username'), 
-		  $user->getAttribute('email')
-		);
+			  $user->getAttribute('first'), 
+			  $user->getAttribute('last'), 
+			  $user->getAttribute('username'), 
+			  $user->getAttribute('email')
+			);
 		}
 		$members .= '</tbody></table>';
 
@@ -254,8 +63,8 @@ class ReportController extends BaseController {
 		if (!empty($foundUsers)) {
 			$foundUser = current($foundUsers);
 			$this->response->doReplace('{{search_result}}', 
-			    sprintf('Found 
-			      user matching <b>%s</b>: <ul><li>%s</li></ul>', 
+			    sprintf('<fieldset><legend>Search Result</legend>Found 
+			      user matching <b>%s</b>: <ul><li>%s</li></ul></fieldset>', 
 			      $this->request->getPostParameter('search_str'),
 			      $foundUser->getAttribute('last')
 			    )
@@ -263,7 +72,9 @@ class ReportController extends BaseController {
 		}
 		elseif (!empty($this->request->getPostParameter('search_str'))) {
 			$this->response->doReplace('{{search_result}}', 
-				sprintf('No user found for <b>%s</b>', $this->request->getPostParameter('search_str'))
+				sprintf('<fieldset><legend>Search Result</legend>No user found for <b>%s</b></fieldset>', 
+					$this->request->getPostParameter('search_str')
+				)
 			); 
 		}
 		else {
@@ -275,6 +86,10 @@ class ReportController extends BaseController {
 		return $this->response->getAttribute('output');
 	}
 }
+
+/**
+ * HomeController
+ */
 class HomeController extends BaseController  {
 	/**
 	 * Controller
@@ -295,6 +110,10 @@ class HomeController extends BaseController  {
 		return $this->response->getAttribute('output');
 	}
 }
+
+/**
+ * MemberController
+ */
 class MemberController extends BaseController  {
 	/**
 	 * Controller
