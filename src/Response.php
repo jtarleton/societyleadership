@@ -12,7 +12,7 @@ class Response {
 	 */
 	public function __construct() {
 		if (!isset($this->output)) {
-			$this->output = get_view(); 
+			$this->output = \SocietyLeadership\Route::getViewByRoute(); 
 		}
 	}
 	/**
