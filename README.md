@@ -1,5 +1,8 @@
 # societyleadership
+
 NSLS exercise
+
+    Admin Account (username: jtarleton, password: jtarleton)
 
 You are required to write a web application using PHP and MySQL that has the following
 features. Do not use any frameworks.

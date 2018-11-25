@@ -232,8 +232,7 @@ class MemberController extends BaseController  {
 		// Do something with the request - run validators, query DB, etc.
 		if ($this->request->hasPostParameters()) {
 			$_SESSION['post'] = $this->request->getPostParameters();
-			//$_SESSION['post']['username_login'] = $this->request->getPostParameter('username_login');
-			//$_SESSION['post']['username_password'] = $this->request->getPostParameter('username_password');
+
 			if (empty($_SESSION['authenticated'])) {
 				if (isset($_SESSION['post']['username_login']) && isset($_SESSION['post']['username_password'])) {
 					$authUser = User::authenticate($_SESSION['post']['username_login'], 
@@ -252,9 +251,19 @@ class MemberController extends BaseController  {
 				}
 			}
 		}
-		$this->response->doReplace('{{login_flash_msgs}}', 
-			implode('<br />', $_SESSION['login_flash_msgs'])
-		);
+
+		if (count($_SESSION['login_flash_msgs'])) {
+			// Display all login_flash_msgs in the session.
+			$this->response->doReplace('{{login_flash_msgs}}',
+			        '<ul><li>'
+			        . implode('</li><li>', $_SESSION['login_flash_msgs'])
+			        . '</li></ul>'
+			);
+		}
+		else {
+			$this->response->doReplace('{{login_flash_msgs}}', '');
+		}
+
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
 

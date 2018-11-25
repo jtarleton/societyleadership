@@ -38,11 +38,11 @@ class Response {
 	 * @return object
 	 */
 	public function doDelimitedReplace($startDelim, $endDelim, $replaceWith) {
-		$snipped = strstr($this->output, $startDelim, $this->output);
+		$snipped = strstr($this->output, $startDelim);
 		$delimFragment = strstr($snipped, $endDelim, true);
-		if (strpos($this->output, $delimFragment) !== false) {
+		if (strpos($this->output, $delimFragment) !== false) { 
 			// now use $delimFragment as a token
-			$this->output = $this->doReplace($delimFragment, $replaceWith); 
+			$this->doReplace($delimFragment, $replaceWith); 
 		}
 		return $this;
 	}
