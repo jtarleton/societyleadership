@@ -319,7 +319,7 @@ function get_view() {
   }
   else {
         switch($requestedRoute) {
-                case '/member/sign-up':
+                case '/member/signup':
                         include(__DIR__ . '/views/signup.html');
                         break;
                 case '/member/logout':
