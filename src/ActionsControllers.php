@@ -374,17 +374,17 @@ class MemberController extends BaseController  {
 		    	$_SESSION['flash_msgs'][] = 'Please correct the form input.';
 		    }
 		}
-		else {
-			// show form
-			$signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
-			$this->response->doReplace('{{signup_form}}', $signupForm);
+		
+		// show form
+		$signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
+		$this->response->doReplace('{{signup_form}}', $signupForm);
 
-			// Default values for sign up form can be empty 
-			// except on POST form submission.
-			foreach (array('username','first','last','password','email') as $fld) {
-				$this->response->doReplace('{{' . $fld . '}}', ''); 
-			}	
-		}
+		// Default values for sign up form can be empty 
+		// except on POST form submission.
+		foreach (array('username','first','last','password','email') as $fld) {
+			$this->response->doReplace('{{' . $fld . '}}', ''); 
+		}	
+	
 		$this->displayFlashMsgs();
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
