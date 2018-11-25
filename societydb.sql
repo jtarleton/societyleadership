@@ -15,6 +15,9 @@ CREATE TABLE `user` (
   `created` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE='InnoDB' COLLATE 'utf8_general_ci';
 
+ALTER TABLE `user`
+ADD UNIQUE `username` (`username`);
+
 INSERT INTO `user` (`id`, `username`, `first`, `last`, `password`, `email`, `role`, `created`) VALUES
 (1,	'bobbyjones',	'Robert',	'Jones',	'bobbyjones',	'robertjones@gmail.com',	'user',	'2018-11-24 22:56:31'),
 (2,	'jonhenderson',	'Jonathan',	'Henderson',	'jonhenderson',	'jonhenderson@gmail.com',	'user',	'2018-11-24 15:41:00'),
