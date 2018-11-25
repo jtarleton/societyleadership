@@ -300,7 +300,7 @@ function get_view() {
   
   if ($isAdmin) {
         switch($requestedRoute) {
-                case '/member/sign-up':
+                case '/member/signup':
                         include(__DIR__ . '/views/signup.html');
                         break;
                 case '/member/logout':
@@ -310,8 +310,10 @@ function get_view() {
                         include(__DIR__ . '/views/login.html');
                         break;
                 case '/report/members':
-                default:
                         include(__DIR__ . '/views/view.html');
+                        break;
+                default:
+                        include(__DIR__ . '/views/home.html');
                         break;
         }
   }
@@ -324,12 +326,14 @@ function get_view() {
                         include(__DIR__ . '/views/logout.html');
                         break;
                 case '/member/login':
-                default:
                         include(__DIR__ . '/views/login.html');
                         break;
                 case '/report/members':
                         //Insufficient Privileges
                         include(__DIR__ . '/views/denied.html');
+                        break;
+                default:
+                        include(__DIR__ . '/views/home.html');
                         break;
         }
   }
