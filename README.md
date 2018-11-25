@@ -3,34 +3,34 @@
 * NSLS exercise *
 
     Admin Account (username: jtarleton, password: jtarleton)
-    
+
 ----------------------------
 ## Commentary From James:
 
 ### System Requirements
-	* PHP 5.3+
-	* MySQL 5.5+
-	* Apache mod_rewrite
+ -    PHP 5.3+
+ -    MySQL 5.5+
+ -    Apache mod_rewrite
 
 ### Database
-	A single MySQL table (user)
+ -    A single MySQL table (user)
 
 ### Summary of Application Components:
 
-	* Controller objects to process Request objects into responses. In general the first and second URL fragments map to controller class and to the controller class method, respectively. 
-	(e.g. "report/members" will call the members method of a ReportsController instance.)
+ -	  Controller objects to process Request objects into responses. In general the first and second URL fragments map to controller class 
+      and to the controller class method, respectively. (e.g. "report/members" will call the members method of a ReportsController instance.)
 
-	* A Route object which is based on the URL of the raw HTTP request.  
+ -	  A Route object which is based on the URL of the raw HTTP request.  
 
-	* Important: Please note the required Apache rewrite rule to hide "index.php?" (located in .htaccess file in the web root) for this 
-	  application to run properly. Apache mod_rewrite must be enabled.
+	  *Important: Please note the required Apache rewrite rule to hide "index.php?" (located in .htaccess file in the web root) for this 
+	  application to run properly. Apache mod_rewrite must be enabled.*
 
-	* A user class as a _model_, which basically maps directly to societyleadership.user in MySQL.
+ -	  A user class as a _model_, which basically maps directly to societyleadership.user in MySQL.
 
-	* A view, which may be one of several HTML-only files containing token strings (e.g. "{{template_token}}") that serve as placeholders for data.
+ -	  A view, which may be one of several HTML-only files containing token strings (e.g. "{{template_token}}") that serve as placeholders for data.
 	  Each view file may preprocess its tokens into data by calling a simple templating routine from the Response.  This routine calls str_replace (i.e. a doReplace instance method on a Response object).
 
-	* A SocietyDB singleton for database connectivity. It will only return a single, non-duplicated PDO instance.
+ -	  A SocietyDB singleton for database connectivity. It will only return a single, non-duplicated PDO instance.
 
 ----------------------------
 
