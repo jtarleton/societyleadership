@@ -1,8 +1,6 @@
-# societyleadership
+# societyleadership repository | NSLS exercise
 
-* NSLS exercise *
-
-    Admin Account (username: jtarleton, password: jtarleton)
+ > Admin Account (username: jtarleton, password: jtarleton)
 
 ----------------------------
 ## Commentary From James:
@@ -17,7 +15,7 @@
 
 ### Summary of Application Components:
 
- -	  Controller objects to process Request objects into responses. In general the first and second URL fragments map to controller class 
+ -	  _Controller_ objects to process Request objects into responses. In general the first and second URL fragments map to controller class 
       and to the controller class method, respectively. (e.g. "report/members" will call the members method of a ReportsController instance.)
 
  -	  A Route object which is based on the URL of the raw HTTP request.  
@@ -27,7 +25,7 @@
 
  -	  A user class as a _model_, which basically maps directly to societyleadership.user in MySQL.
 
- -	  A view, which may be one of several HTML-only files containing token strings (e.g. "{{template_token}}") that serve as placeholders for data.
+ -	  A _view_, which may be one of several HTML-only files containing token strings (e.g. "{{template_token}}") that serve as placeholders for data.
 	  Each view file may preprocess its tokens into data by calling a simple templating routine from the Response.  This routine calls str_replace (i.e. a doReplace instance method on a Response object).
 
  -	  A SocietyDB singleton for database connectivity. It will only return a single, non-duplicated PDO instance.
