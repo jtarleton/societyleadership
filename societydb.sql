@@ -15,9 +15,14 @@ CREATE TABLE `user` (
   `created` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE='InnoDB' COLLATE 'utf8_general_ci';
 
+INSERT INTO `user` (`id`, `username`, `first`, `last`, `password`, `email`, `role`, `created`) VALUES
+(1,	'bobbyjones',	'Robert',	'Jones',	'bobbyjones',	'robertjones@gmail.com',	'user',	'2018-11-24 22:56:31'),
+(2,	'jonhenderson',	'Jonathan',	'Henderson',	'jonhenderson',	'jonhenderson@gmail.com',	'user',	'2018-11-24 15:41:00'),
+(3,	'georgejetson',	'George',	'Jetson',	'georgejetson',	'gjetson@domain.com',	'user',	'2018-11-24 22:56:18'),
+(8,	'jsanders',	'John',	'Sanders',	'jsanders',	'jsanders@gmail.com',	'user',	'2018-11-23 04:46:22'),
+(9,	'fredf',	'Fred',	'Flintsone',	'fred',	'fred@acme.com',	'user',	'2018-11-23 05:46:19'),
+(22,	'jtarleton',	'james',	'tarleton',	'jtarleton',	'jamestarleton@gmail.com',	'admin',	'2018-11-24 15:40:49'),
+(29,	'jasmine',	'jasmine',	'asdf',	'jasmine',	'jasmine@gmail.com',	'user',	'2018-11-24 15:23:25'),
+(36,	'george',	'george',	'jones',	'george',	'jeorgejones@george.com',	'user',	'2018-11-24 22:00:32');
 
-INSERT INTO `user` (`username`, `first`, `last`, `password`, `email`, `role`, `created`)
-VALUES ('bobbyjones', 'Robert', 'Jones', 'bobbyjones', 'robertjones@gmail.com', 'user', '0000-00-00 00:00:00');
 
-INSERT INTO `user` (`username`, `first`, `last`, `password`, `email`, `role`, `created`)
-VALUES ('jonhenderson', 'Jonathan', 'Henderson', 'jonhenderson', 'jonhenderson@gmail.com', 'admin', '0000-00-00 00:00:00');
