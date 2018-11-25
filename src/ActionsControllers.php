@@ -275,8 +275,8 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function signup() {
-		MenuUtils::welcome($this->response);
-		MenuUtils::topMenu($this->response);
+		\SocietyLeadership\MenuUtils::welcome($this->response);
+		\SocietyLeadership\MenuUtils::topMenu($this->response);
 
 		// Default values for sign up 
 		// form can be empty except on submission.
