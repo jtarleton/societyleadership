@@ -26,6 +26,7 @@ class ReportController extends BaseController {
 		$members = '<table id="membersTable"><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
 		$j = 0;
 		foreach ($allUsers as $user) {
+			$j++;
 			$trClass = ($j%2 !== 0) ? 'odd': 'even'; 
 			$members .= sprintf('<tr class="%s"><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>',
 			  $trClass, 
