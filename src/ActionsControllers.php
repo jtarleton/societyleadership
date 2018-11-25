@@ -237,7 +237,7 @@ class MemberController extends BaseController  {
 			//$_SESSION['post']['username_login'] = $this->request->getPostParameter('username_login');
 			//$_SESSION['post']['username_password'] = $this->request->getPostParameter('username_password');
 			if (empty($_SESSION['authenticated'])) {
-				if (!empty($_SESSION['post']['username_login']) && !empty($_SESSION['post']['username_password'])) {
+				if (isset($_SESSION['post']['username_login']) && isset($_SESSION['post']['username_password'])) {
 					$authUser = User::authenticate($_SESSION['post']['username_login'], 
 						$_SESSION['post']['username_password']
 					);
