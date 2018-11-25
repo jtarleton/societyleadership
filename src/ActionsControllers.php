@@ -104,7 +104,7 @@ class MenuUtils {
 	    $response->doReplace('{{login_form}}', 'You are logged in.');
 	  }
 	  else {
-	    $loginForm = file_get_contents(__DIR__ . '/_login_form.php');
+	    $loginForm = file_get_contents(__DIR__ . '/_login_form.html');
 	    $response->doReplace('{{loggedin_user}}', '');
 	    $response->doReplace('{{login_form}}', $loginForm);
 	  }
@@ -294,14 +294,6 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function signup() {
-
-
-		// Default values for sign up 
-		// form can be empty except on submission.
- 		foreach (array('username','first','last','password','email') as $fld) {
-			$this->response->doReplace('{{' . $fld . '}}', ''); 
-		}
-
 		if ($this->request->hasPostParameters()) {
 			$_SESSION['post'] = $this->request->getPostParameters();
 			$validator = new \SocietyLeadership\Validator();
@@ -366,8 +358,10 @@ class MemberController extends BaseController  {
 		      ) {
 		        $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', 
 		        	$this->request->getPostParameter('username')
-		        ); 
+		        );
 
+				//don't show form
+				$this->response->doReplace('{{signup_form}}', '');
 		      }
 		      else {
 		        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
@@ -377,6 +371,18 @@ class MemberController extends BaseController  {
 		    	// Indicate global level form error
 		    	$_SESSION['flash_msgs'][] = 'Please correct the form input.';
 		    }
+		}
+		else {
+			//show form
+		    $signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
+		    $this->response->doReplace('{{signup_form}}', $signupForm);
+
+
+			// Default values for sign up form can be empty 
+			// except on POST form submission.
+			foreach (array('username','first','last','password','email') as $fld) {
+				$this->response->doReplace('{{' . $fld . '}}', ''); 
+			}	
 		}
 		$this->displayFlashMsgs();
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
