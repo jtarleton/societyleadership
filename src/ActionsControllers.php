@@ -381,9 +381,11 @@ class MemberController extends BaseController  {
 
 		// Default values for sign up form can be empty 
 		// except on POST form submission.
-		foreach (array('username','first','last','password','email') as $fld) {
-			$this->response->doReplace('{{' . $fld . '}}', ''); 
-		}	
+		if (!$this->request->hasPostParameters()) {
+			foreach (array('username','first','last','password','email') as $fld) {
+				$this->response->doReplace('{{' . $fld . '}}', ''); 
+			}	
+		}
 	
 		$this->displayFlashMsgs();
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
