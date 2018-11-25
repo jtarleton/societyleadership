@@ -303,6 +303,7 @@ class MemberController extends BaseController  {
 		}
 
 		if ($this->request->hasPostParameters()) {
+			$_SESSION['post'] = $this->request->getPostParameters();
 			$validator = new \SocietyLeadership\Validator();
 			$validator->setAttribute('executed', null);
 		
@@ -345,7 +346,8 @@ class MemberController extends BaseController  {
 
 		      // Display request as default values if validation fails.
 		      foreach (array('username','first','last','password','email') as $fld) {
-		      	$this->response->doReplace('{{' . $fld . '}}', $_SESSION['post'][$fld]); 
+		      	$token = sprintf('{{%s}}', $fld);
+		      	$this->response->doReplace($token, $_SESSION['post'][$fld]); 
 		      }
 		    }	
 
@@ -391,12 +393,13 @@ class MemberController extends BaseController  {
 		// Do something with the request - run validators, query DB, etc.
 		if ($this->request->hasPostParameters()) {
 			$_SESSION['post'] = $this->request->getPostParameters();
-			$_SESSION['post']['username_login'] = $this->request->getPostParameter('username_login');
-			$_SESSION['post']['username_password'] = $this->request->getPostParameter('username_password');
+			//$_SESSION['post']['username_login'] = $this->request->getPostParameter('username_login');
+			//$_SESSION['post']['username_password'] = $this->request->getPostParameter('username_password');
 			if (empty($_SESSION['authenticated'])) {
 				if (!empty($_SESSION['post']['username_login']) && !empty($_SESSION['post']['username_password'])) {
 					$authUser = User::authenticate($_SESSION['post']['username_login'], 
-					$_SESSION['post']['username_password']);
+						$_SESSION['post']['username_password']
+					);
 				    if ($authUser instanceof User) {
 				      $_SESSION['authenticated'] = true;
 				      $_SESSION['authUser'] = serialize($authUser);
