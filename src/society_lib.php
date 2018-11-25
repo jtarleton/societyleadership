@@ -191,7 +191,7 @@ function preprocess_view() {
 
   $topMenuItems = array(
     'members'=> '<a href="/report/members">Members List</a>',
-    'sign-up'=> '<a href="/member/sign-up">Sign-up user</a>',
+    'sign-up'=> '<a href="/member/signup">Sign-up user</a>',
     'login'=> '<a href="/member/login">Login</a>',
     'logout'=> '<a href="/member/logout">Logout</a>'
   );
@@ -241,7 +241,7 @@ function render_view() {
   session_start();
   $requestedRoute = $_SERVER['REQUEST_URI'];
   switch ($requestedRoute) {
-    case '/member/sign-up':
+    case '/member/signup':
     $actions = new \SocietyLeadership\MemberController();
     echo $actions->signup();
 		//echo preprocess_view();
@@ -252,8 +252,11 @@ function render_view() {
     $actions = new \SocietyLeadership\MemberController();
     echo $actions->logout();
     break;
+  case '/member/login':
+    $actions = new \SocietyLeadership\MemberController();
+    echo $actions->login();
+    break;
 	case '/report/members':
-	
 		$actions = new \SocietyLeadership\ReportController();
     echo $actions->members();
 		break;
