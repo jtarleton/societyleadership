@@ -154,6 +154,10 @@ class User {
       ? $user->getAttribute('username') 
       : null;
 
+    if (!isset($dbUsername)) {
+      return false;
+    }
+    
     /** 
     * @todo salt and hash DB password 
     */
