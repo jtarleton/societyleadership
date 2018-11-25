@@ -55,11 +55,15 @@ class User {
 
   public function isAdmin() {
     global $ini_array;
+
     if (!empty($ini_array)) {
       // Read credentials from INI file values.
       $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
       $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
-      return ($this->getAttribute('username') === $storedUsername);
+
+      return ($this->getAttribute('username') === $storedUsername 
+        && $this->getAttribute('role') === 'admin'
+      );
     }
     return false;
   }
@@ -133,6 +137,7 @@ class User {
     // Authenticate credentials in request against INI file values.
     $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
     $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
+    $enabledIniAuth = trim($ini_array['first_section']['admin_config']['enable_ini_admin_auth']);
 
     $authAdminFromIni = ($username === $storedUsername
       && $password === $storedPassword);
@@ -149,19 +154,31 @@ class User {
       ? $user->getAttribute('username') 
       : null;
 
+    /** 
+    * @todo salt and hash DB password 
+    */
     $dbPassword = ($user instanceof User) 
       ? $user->getAttribute('password') 
       : null;
 
-
     $authUser = ($username === $dbUsername
       && $password === $dbPassword);
 
-    // Authenticate credentials in request against (either) stored INI or DB values.
-    if ($authAdminFromIni || $authUser
-    ) {
-      //if authenticated, return the instance
-      return $user;
+    if ($user->isAdmin() && $enabledIniAuth) {
+      // Special authentication for admin is enabled.
+      // Authenticate credentials in request against (both) stored INI and DB values.
+      if ($authAdminFromIni && $authUser
+      ) {
+        //if authenticated, return the instance
+        return $user;
+      } 
+    }
+    else {
+      // Authenticate credentials in request against only DB values.
+      if ($authUser) {
+        //if authenticated, return the instance
+        return $user;
+      } 
     }
     return false;
   }
