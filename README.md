@@ -1,8 +1,7 @@
-# societyleadership repository | NSLS exercise
+# societyleadership
 
  > Admin Account (username: jtarleton, password: jtarleton)
 
-----------------------------
 ## Commentary From James:
 
 ### System Requirements
