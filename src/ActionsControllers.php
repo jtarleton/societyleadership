@@ -366,8 +366,9 @@ class MemberController extends BaseController  {
 	        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
 	      } 
 	    }
-	    $this->displayFlashMsgs(); 
+	    
 	}
+	$this->displayFlashMsgs(); 
 	    return $this->response->getAttribute('output');
 	}
 
@@ -378,7 +379,7 @@ class MemberController extends BaseController  {
 	public function login() {
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
-		$this->clearSession();
+		//$this->clearSession();
 
 		// Do something with the request - run validators, query DB, etc.
 		if ($this->request->hasPostParameters()) {
