@@ -82,7 +82,22 @@ class Response {
 		$this->output = str_replace($tokenName, $replaceWith, $this->output);
 		return $this;
 	} 
-	// 
+
+	/**
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return object
+	 */
+	public function doDelimitedReplace($startDelim, $endDelim, $replaceWith) {
+		$snipped = strstr($this->output, $startDelim, $this->output);
+		$delimFragment = strstr($snipped, $endDelim, true);
+		if (strpos($this->output, $delimFragment) !== false) {
+			// now use $delimFragment as a token
+			$this->output = $this->doReplace($delimFragment, $replaceWith); 
+		}
+		return $this;
+	}
 }
 
 class MenuUtils {
@@ -294,11 +309,10 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function signup() {
-		if (!$this->request->hasPostParameters()) {
-			// show form
-			$signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
-			$this->response->doReplace('{{signup_form}}', $signupForm); 
-		}
+
+		// show form
+		$signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
+		$this->response->doReplace('{{signup_form}}', $signupForm); 
 
 		if ($this->request->hasPostParameters()) {
 			$_SESSION['post'] = $this->request->getPostParameters();
@@ -367,7 +381,7 @@ class MemberController extends BaseController  {
 		        );
 
 				//don't show form
-				$this->response->doReplace('{{signup_form}}', '');
+				$this->response->doDelimitedReplace('<!--signup-->', '<!--/signup-->', '');
 		      }
 		      else {
 		        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
@@ -380,7 +394,6 @@ class MemberController extends BaseController  {
 		}
 
 		// Default values for sign up form can be empty 
-		// except on POST form submission.
 		if (!$this->request->hasPostParameters()) {
 			foreach (array('username','first','last','password','email') as $fld) {
 				$this->response->doReplace('{{' . $fld . '}}', ''); 
