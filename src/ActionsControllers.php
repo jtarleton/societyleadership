@@ -300,6 +300,7 @@ class MemberController extends BaseController  {
 			$this->response->doReplace('{{' . $fld . '}}', ''); 
 		}
 
+	if (!empty($this->request->hasPostParameters())) {
 		$validator = new \SocietyLeadership\Validator();
 		$validator->setAttribute('executed', null);
 	
@@ -365,7 +366,8 @@ class MemberController extends BaseController  {
 	        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
 	      } 
 	    }
-	    $this->displayFlashMsgs();
+	    $this->displayFlashMsgs(); 
+	}
 	    return $this->response->getAttribute('output');
 	}
 
@@ -403,6 +405,7 @@ class MemberController extends BaseController  {
 		$this->response->doReplace('{{login_flash_msgs}}', 
 			implode('<br />', $_SESSION['login_flash_msgs'])
 		);
+		$_SESSION['login_flash_msgs'] = null;
 		return $this->response->getAttribute('output');
 	}
 
