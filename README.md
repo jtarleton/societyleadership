@@ -68,8 +68,8 @@ and password in plain text in the readme file.
 
 ## Submission Instructions:
 	
- -	  Provide a zip file with all necessary files.
- -	  Include a database dump file that loads the schema and some sample data.
+ -	  Provide a [zip file](https://github.com/jtarleton/societyleadership/archive/master.zip) with all necessary files.
+ -	  Include a [database dump](https://raw.githubusercontent.com/jtarleton/societyleadership/master/societydb.sql) file that loads the schema and some sample data.
  -	  Provide a readme file explaining any choices you made.
 
 You will be assessed on how well you have done the following:
