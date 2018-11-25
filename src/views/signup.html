@@ -24,18 +24,8 @@
     <div>
         {{flash_msgs}}
     </div>
-
-    <fieldset>
-        <legend>Sign-Up</legend>
-        <form action="/member/signup" method="POST">
-            <label for="username">Username <input name="username" type="text" placeholder="" value="{{username}}"></input></label>
-            <label for="password">Password <input name="password" type="password" placeholder="" value="{{password}}"></input></label>
-            <label for="first">First name <input name="first" type="text" placeholder="" value="{{first}}"></input></label>
-            <label for="last">Last name <input name="last" type="text" placeholder="" value="{{last}}"></input></label>
-            <label for="email">Email <input name="email" type="text" placeholder="" value="{{email}}"></input></label>
-            <input type="submit" value="Sign Up"></input>
-        </form>
-    </fieldset>
+    {{signup_form}}
+   
 
 </div>
 <script>
