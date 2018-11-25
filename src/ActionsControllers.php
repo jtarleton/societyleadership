@@ -23,10 +23,12 @@ class ReportController extends BaseController {
 		// Call data model for dynamic view data based on request
 		$allUsers = \SocietyLeadership\User::findByCriteria(array());
 
-		$members = '<table><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
-
+		$members = '<table id="membersTable"><thead><tr><th>First</th><th>Last</th><th>Username</th><th>Email</th></tr></thead><tbody><tr>';
+		$j = 0;
 		foreach ($allUsers as $user) {
-			$members .= sprintf('<tr><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>', 
+			$trClass = ($j%2 !== 0) ? 'odd': 'even'; 
+			$members .= sprintf('<tr class="%s"><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>',
+			  $trClass, 
 			  $user->getAttribute('first'), 
 			  $user->getAttribute('last'), 
 			  $user->getAttribute('username'), 
