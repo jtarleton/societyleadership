@@ -18,15 +18,15 @@
  -	  Controller objects to process Request objects into responses. In general the first and second URL fragments map to controller class 
       and to the controller class method, respectively. (e.g. "report/members" will call the members method of a ReportsController instance.)
 
- -	  A Route object which is based on the URL of the raw HTTP request.  
+ -	  A Route object based on the URL of the raw HTTP request.  
 
 	  *Important: Please note the required Apache rewrite rule to hide "index.php?" (located in .htaccess file in the web root) for this 
 	  application to run properly. Apache mod_rewrite must be enabled.*
 
  -	  A user class as a model, which basically maps directly to societyleadership.user in MySQL.
 
- -	  A view, which may be one of several HTML-only files containing token strings (e.g. "{{template_token}}") that serve as placeholders for data.
-	  Each view file may preprocess its tokens into data by calling a simple templating routine from the Response.  This routine calls [str_replace](http://php.net/manual/en/function.str-replace.php) (i.e. a doReplace instance method on a Response object).
+ -	  A view consisting of an HTML-only template file.  The template contains token strings (e.g. "{{template_token}}") serving as placeholders for data.
+	  The tokens in each view file will be replaced with data during a simple templating routine called on the Response.  This routine calls [str_replace](http://php.net/manual/en/function.str-replace.php) (i.e. a doReplace instance method on a Response object).
 
  -	  A SocietyDB singleton for database connectivity. It will only return a single, non-duplicated PDO instance.
 
