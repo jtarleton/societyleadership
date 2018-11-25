@@ -261,6 +261,25 @@ class ReportController extends BaseController {
 		return $this->response->getAttribute('output');
 	}
 }
+class HomeController extends BaseController  {
+	/**
+	 * Controller
+	 */
+	public function __construct() {
+		global $ini_array;
+		parent::__construct();
+	}
+
+	/**
+	 * Index
+	 * @return string
+	 */
+	public function index() {
+		\SocietyLeadership\MenuUtils::welcome($this->response);
+		\SocietyLeadership\MenuUtils::topMenu($this->response);
+		return $this->response->getAttribute('output');
+	}
+}
 class MemberController extends BaseController  {
 	/**
 	 * Controller

@@ -253,10 +253,14 @@ function render_view() {
     echo $actions->logout();
     break;
 	case '/report/members':
-	default:
+	
 		$actions = new \SocietyLeadership\ReportController();
     echo $actions->members();
 		break;
+  default:
+    $actions = new \SocietyLeadership\HomeController();
+    echo $actions->index();
+    break;
   }
 }
 
