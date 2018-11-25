@@ -294,6 +294,10 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function signup() {
+		//show form
+		$signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
+		$this->response->doReplace('{{signup_form}}', $signupForm);
+
 		if ($this->request->hasPostParameters()) {
 			$_SESSION['post'] = $this->request->getPostParameters();
 			$validator = new \SocietyLeadership\Validator();
@@ -373,10 +377,7 @@ class MemberController extends BaseController  {
 		    }
 		}
 		else {
-			//show form
-		    $signupForm = file_get_contents(__DIR__ . '/_signup_form.html');
-		    $this->response->doReplace('{{signup_form}}', $signupForm);
-
+			// show form
 
 			// Default values for sign up form can be empty 
 			// except on POST form submission.
