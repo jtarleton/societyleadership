@@ -252,7 +252,7 @@ class ReportController extends BaseController {
 		else {
 			$this->response->doReplace('{{search_result}}', ''); 
 		}
-		$this->response->displayFlashMsgs();
+		$this->displayFlashMsgs();
 		return $this->response->getAttribute('output');
 	}
 }
@@ -272,7 +272,7 @@ class HomeController extends BaseController  {
 	public function index() {
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
-		$this->response->displayFlashMsgs();
+		$this->displayFlashMsgs();
 		return $this->response->getAttribute('output');
 	}
 }
@@ -364,7 +364,7 @@ class MemberController extends BaseController  {
 	        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
 	      } 
 	    }
-	    $this->response->displayFlashMsgs();
+	    $this->displayFlashMsgs();
 	    return $this->response->getAttribute('output');
 	}
 
@@ -412,7 +412,7 @@ class MemberController extends BaseController  {
 	public function logout() {
 		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
-		$this->response->displayFlashMsgs();
+		$this->displayFlashMsgs();
 		return $this->response->getAttribute('output');
 	}
 }
