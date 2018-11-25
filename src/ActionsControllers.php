@@ -37,8 +37,8 @@ class ReportController extends BaseController {
 
 
 		// Display all flash messages in the session.
-		$this->response->doReplace('{{flash_msgs}}', 
-			implode('<br />', $_SESSION['flash_msgs'])
+		$this->response->doReplace('{{flash_msgs}}', '<ul><li>'.
+			implode('</li><li>', $_SESSION['flash_msgs']) . '</li></ul>'
 		);
 
 		// Display members table
