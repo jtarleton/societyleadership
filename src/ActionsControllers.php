@@ -88,6 +88,7 @@ class MenuUtils {
 	 * Add welcome text to response.
 	 */
 	public static function welcome(Response $response) {
+		session_start();
 		if (!empty($_SESSION['authenticated'])) {
 	    $loginForm = '';
 	    if (!empty($_SESSION['authUser'])) {
@@ -187,19 +188,12 @@ class ReportController extends BaseController {
 	}
 
 	/**
-	 * @return void
-	 */
-	public function displayFlashMsgs() {
-		// Display all flash messages in the session.
-  		$this->response->doReplace('{{flash_msgs}}', 
-  			implode('<br />', $_SESSION['flash_msgs'])
-  		);
-	}
-
-	/**
 	 * @return string
 	 */
 	public function members() {
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
+
 		// Call data model for dynamic view data based on request
 		$allUsers = \SocietyLeadership\User::findByCriteria(array());
 
@@ -258,6 +252,7 @@ class ReportController extends BaseController {
 		else {
 			$this->response->doReplace('{{search_result}}', ''); 
 		}
+		$this->response->displayFlashMsgs();
 		return $this->response->getAttribute('output');
 	}
 }
@@ -275,8 +270,9 @@ class HomeController extends BaseController  {
 	 * @return string
 	 */
 	public function index() {
-		\SocietyLeadership\MenuUtils::welcome($this->response);
-		\SocietyLeadership\MenuUtils::topMenu($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
+		$this->response->displayFlashMsgs();
 		return $this->response->getAttribute('output');
 	}
 }
@@ -294,8 +290,8 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function signup() {
-		\SocietyLeadership\MenuUtils::welcome($this->response);
-		\SocietyLeadership\MenuUtils::topMenu($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
 
 		// Default values for sign up 
 		// form can be empty except on submission.
@@ -368,6 +364,7 @@ class MemberController extends BaseController  {
 	        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
 	      } 
 	    }
+	    $this->response->displayFlashMsgs();
 	    return $this->response->getAttribute('output');
 	}
 
@@ -376,8 +373,8 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function login() {
-		\SocietyLeadership\MenuUtils::welcome($this->response);
-		\SocietyLeadership\MenuUtils::topMenu($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
 		$this->clearSession();
 
 		// Do something with the request - run validators, query DB, etc.
@@ -413,8 +410,9 @@ class MemberController extends BaseController  {
 	 * @return string
 	 */
 	public function logout() {
-		\SocietyLeadership\MenuUtils::welcome($this->response);
-		\SocietyLeadership\MenuUtils::topMenu($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
+		$this->response->displayFlashMsgs();
 		return $this->response->getAttribute('output');
 	}
 }
