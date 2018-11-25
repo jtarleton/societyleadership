@@ -28,7 +28,7 @@ class ReportController extends BaseController {
 		foreach ($allUsers as $user) {
 			$j++;
 			$trClass = ($j%2 !== 0) ? 'odd': 'even'; 
-			$members .= sprintf('<tr class="%s"><td>%s</td><td>%s</tdr><td>%s</td><td>%s</td></tr>',
+			$members .= sprintf('<tr class="%s"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
 			  $trClass, 
 			  $user->getAttribute('first'), 
 			  $user->getAttribute('last'), 
