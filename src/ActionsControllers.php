@@ -3,7 +3,7 @@
 namespace SocietyLeadership;
 
 interface FlashMessage {
-	public function displayFlashMessages();
+	public function displayFlashMsgs();
 }
 
 class Request  {
