@@ -302,76 +302,82 @@ class MemberController extends BaseController  {
 			$this->response->doReplace('{{' . $fld . '}}', ''); 
 		}
 
-	if ($this->request->hasPostParameters()) {
-		$validator = new \SocietyLeadership\Validator();
-		$validator->setAttribute('executed', null);
-	
-	    // Validate new signup request data - error if incorrect.
-	    $candidateUser = new User();
-	    $candidateUser->setAttribute('username', $this->request->getPostParameter('username'));
-	    $candidateUser->setAttribute('email', $this->request->getPostParameter('email'));
-	    if (empty($validator->getAttribute('executed'))) {
-	      if (!$validator->validateStringEmail($this->request->getPostParameter('email'))) {
-	        $_SESSION['flash_msgs'][] = 'Invalid email.';
-	      } 
+		if ($this->request->hasPostParameters()) {
+			$validator = new \SocietyLeadership\Validator();
+			$validator->setAttribute('executed', null);
+		
+		    // Validate new signup request data - error if incorrect.
+		    $candidateUser = new User();
+		    $candidateUser->setAttribute('username', $this->request->getPostParameter('username'));
+		    $candidateUser->setAttribute('email', $this->request->getPostParameter('email'));
 
-	      if (!$validator->validateStringLength($this->request->getPostParameter('password'))) {
-	        $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
-	      }
+		    //If form not yet validated
+		    if (empty($validator->getAttribute('executed'))) {
+		      
+		      // Validate form and add errors to stack
 
-	      if (!$validator->validateUserNoneExists($candidateUser)) {
-	        $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> or email <b>%s</b> already exists.', 
-	          $candidateUser->getAttribute('username'), $candidateUser->getAttribute('email')
-	        );
-	      }
+		      // Indicate field level form errors...
+		      if (!$validator->validateStringEmail($this->request->getPostParameter('email'))) {
+		        $_SESSION['flash_msgs'][] = 'Invalid email.';
+		      } 
 
-	      if (!$validator->validateStringNotEmpty($this->request->getPostParameter('username'))) {
-	        $_SESSION['flash_msgs'][] = 'Username is a required field.';
-	      } 
+		      if (!$validator->validateStringLength($this->request->getPostParameter('password'))) {
+		        $_SESSION['flash_msgs'][] = 'Invalid password length. Password should contain a minimum of six characters.';
+		      }
 
-	      if (!$validator->validateStringNotEmpty($this->request->getPostParameter('first'))) {
-	        $_SESSION['flash_msgs'][] = 'First name is a required field.';
-	      }
+		      if (!$validator->validateUserNoneExists($candidateUser)) {
+		        $_SESSION['flash_msgs'][] = sprintf('Invalid user input. The user <b>%s</b> or email <b>%s</b> already exists.', 
+		          $candidateUser->getAttribute('username'), $candidateUser->getAttribute('email')
+		        );
+		      }
 
-	      if (!$validator->validateStringNotEmpty($this->request->getPostParameter('last'))) {
-	        $_SESSION['flash_msgs'][] = 'Last name is a required field.';
-	      } 
+		      if (!$validator->validateStringNotEmpty($this->request->getPostParameter('username'))) {
+		        $_SESSION['flash_msgs'][] = 'Username is a required field.';
+		      } 
 
-	      // Display request as default values if validation fails.
-	      foreach (array('username','first','last','password','email') as $fld) {
-	      	$this->response->doReplace('{{' . $fld . '}}', $_SESSION['post'][$fld]); 
-	      }
-	    }	
+		      if (!$validator->validateStringNotEmpty($this->request->getPostParameter('first'))) {
+		        $_SESSION['flash_msgs'][] = 'First name is a required field.';
+		      }
 
-    	// Only add user if the validation error array is still empty.
-	    if (empty($_SESSION['flash_msgs'])) {
-	      //Add new user by calling saveNew on a User instance
-	      if (User::doInsert(
-	          array(
-	            'username' => $this->request->getPostParameter('username'),
-	            'first' => $this->request->getPostParameter('first'),
-	            'last' => $this->request->getPostParameter('last'),
-	            'password' => $this->request->getPostParameter('password'),
-	            'email' => $this->request->getPostParameter('email')
-	          )
-	        )
-	      ) {
-	        $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', 
-	        	$this->request->getPostParameter('username')
-	        ); 
-	        //Clear fields
-	 		foreach (array('username','first','last','password','email') as $fld) {
-				$this->response->doReplace('{{' . $fld . '}}', ''); 
-			}
-	      }
-	      else {
-	        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
-	      } 
-	    }
-	    
-	}
-	$this->displayFlashMsgs();
-			$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		      if (!$validator->validateStringNotEmpty($this->request->getPostParameter('last'))) {
+		        $_SESSION['flash_msgs'][] = 'Last name is a required field.';
+		      } 
+
+		      // Display request as default values if validation fails.
+		      foreach (array('username','first','last','password','email') as $fld) {
+		      	$this->response->doReplace('{{' . $fld . '}}', $_SESSION['post'][$fld]); 
+		      }
+		    }	
+
+	    	// Only add user if the validation error stack is still empty.
+		    if (empty($_SESSION['flash_msgs'])) {
+		      //Add new user by calling saveNew on a User instance
+		      if (User::doInsert(
+		          array(
+		            'username' => $this->request->getPostParameter('username'),
+		            'first' => $this->request->getPostParameter('first'),
+		            'last' => $this->request->getPostParameter('last'),
+		            'password' => $this->request->getPostParameter('password'),
+		            'email' => $this->request->getPostParameter('email')
+		          )
+		        )
+		      ) {
+		        $_SESSION['flash_msgs'][] = sprintf('Added user <b>%s</b>.', 
+		        	$this->request->getPostParameter('username')
+		        ); 
+
+		      }
+		      else {
+		        $_SESSION['flash_msgs'][] = 'Error adding user.'; 
+		      } 
+		    }
+		    else {
+		    	// Indicate global level form error
+		    	$_SESSION['flash_msgs'][] = 'Please correct the form input.';
+		    }
+		}
+		$this->displayFlashMsgs();
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response);
 	    return $this->response->getAttribute('output');
 	}
@@ -420,7 +426,7 @@ class MemberController extends BaseController  {
 	public function logout() {
 
 		$this->displayFlashMsgs();
-				$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
+		$this->response = \SocietyLeadership\MenuUtils::welcome($this->response);
 		$this->response = \SocietyLeadership\MenuUtils::topMenu($this->response); 
 		return $this->response->getAttribute('output');
 	}
