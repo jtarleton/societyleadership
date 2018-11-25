@@ -15,12 +15,14 @@ class MenuUtils {
 	    if (!empty($_SESSION['authUser'])) {
 	      $userObj = unserialize($_SESSION['authUser']); 
 	      $name = '';
+	      $role = '';
 	      if($userObj instanceof User) {
+	      	$role = $userObj->getAttribute('role');
 	        $name = $userObj->getFullname();
 	      }
 	    }
-	    $response->doReplace('{{loggedin_user}}', "You are logged in. Welcome $name.");
-	    $response->doReplace('{{login_form}}', 'You are logged in.');
+	    $response->doReplace('{{loggedin_user}}', "<ul><li>You are logged in. Welcome $name ($role).</li></ul>");
+	    $response->doReplace('{{login_form}}', '<ul><li>You are logged in.</li></ul>');
 	  }
 	  else {
 	    $loginForm = file_get_contents(__DIR__ . '/_login_form.html');
