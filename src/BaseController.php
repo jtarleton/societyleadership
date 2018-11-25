@@ -45,7 +45,9 @@ class BaseController implements \SocietyLeadership\FlashMessage {
 	public function displayFlashMsgs() {
 		// Display all flash messages in the session.
 		$this->response->doReplace('{{flash_msgs}}', 
-			implode('<br />', $_SESSION['flash_msgs'])
+			'<ul><li>' 
+			. implode('</li><li>', $_SESSION['flash_msgs']) 
+			. '</li></ul>'
 		);
 		$_SESSION['flash_msgs'] = null;
 	}
