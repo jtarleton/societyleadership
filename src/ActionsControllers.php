@@ -22,13 +22,16 @@ class Request  {
 	 * @return Bool
 	 */
 	public function hasPostParameters() {
-		return !empty($this->post);
+		return !empty($_POST) ? true : false;
 	}
 	/**
 	 * @return array
 	 */
 	public function getPostParameters() {
-		return $this->post;
+		if (empty($this->post)) {
+			$this->createFromGlobals();
+		}
+ 		return $this->post;
 	}
 	/**
 	 * @param string
@@ -300,7 +303,7 @@ class MemberController extends BaseController  {
 			$this->response->doReplace('{{' . $fld . '}}', ''); 
 		}
 
-	if (!empty($this->request->hasPostParameters())) {
+	if ($this->request->hasPostParameters()) {
 		$validator = new \SocietyLeadership\Validator();
 		$validator->setAttribute('executed', null);
 	
