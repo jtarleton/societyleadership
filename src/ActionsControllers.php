@@ -115,7 +115,7 @@ class MenuUtils {
 	public static function topMenu(Response $response) {
 		$topMenuItems = array(
 			'members'=> '<a href="/report/members">Members List</a>',
-			'sign-up'=> '<a href="/member/sign-up">Sign-up user</a>',
+			'signup'=> '<a href="/member/signup">Sign-up user</a>',
 			'login'=> '<a href="/member/login">Login</a>',
 			'logout'=> '<a href="/member/logout">Logout</a>'
 		);
