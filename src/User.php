@@ -137,7 +137,7 @@ class User {
     // Authenticate credentials in request against INI file values.
     $storedUsername = trim(base64_decode($ini_array['first_section']['admin_config']['username']));
     $storedPassword = trim(base64_decode($ini_array['first_section']['admin_config']['password']));
-    $enabledIniAuth = trim($ini_array['first_section']['admin_config']['enable_ini_admin_auth']);
+    $enabledIniAuth = trim($ini_array['first_section']['admin_config']['enable_ini_admin_auth']) === 'true';
 
     $authAdminFromIni = ($username === $storedUsername
       && $password === $storedPassword);
