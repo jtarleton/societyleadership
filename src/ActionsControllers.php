@@ -165,6 +165,7 @@ class BaseController implements \SocietyLeadership\FlashMessage {
 		$this->response->doReplace('{{flash_msgs}}', 
 			implode('<br />', $_SESSION['flash_msgs'])
 		);
+		$_SESSION['flash_msgs'] = null;
 	}
 }
 
