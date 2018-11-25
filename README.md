@@ -1,4 +1,5 @@
 # societyleadership
+ > http://societyleadership.jamestarleton.com/
 
  > Admin Account (username: jtarleton, password: jtarleton)
 
@@ -36,22 +37,22 @@ features. Do not use any frameworks.
 
 ## Core Features:
 1. A user sign up page that lets the user pick the following:
-	a. Username - throw an error if the username is already in use
-	b. Password - minimum 6 characters
-	c. First name - required
-	d. Last name - required
-	e. Email address - validate input for common email address formats
+ -	  a. Username - throw an error if the username is already in use
+ -	  b. Password - minimum 6 characters
+ -	  c. First name - required
+ -	  d. Last name - required
+ -	  e. Email address - validate input for common email address formats
 
-	The path for this page should be: /member/sign-up
+ -	  The path for this page should be: /member/sign-up
 
 2. A report page that shows a list of all the members who have joined. The following should
 be shown for each user:
-	a. First name
-	b. Last name
-	c. Username
-	d. Email address
+ -	  a. First name
+ -	  b. Last name
+ -	  c. Username
+ -	  d. Email address
 
-	The path for this page should be: /report/members
+ -	  The path for this page should be: /report/members
 
 3. The report page should have a search box that allows the user to enter an email address
 and check if an account with that email address exists.
@@ -70,8 +71,10 @@ and password in plain text in the readme file.
 Provide a zip file with all necessary files.
 Include a database dump file that loads the schema and some sample data.
 Provide a readme file explaining any choices you made.
+
 You will be assessed on how well you have done the following:
-	○ Covered the core features requirements
-	○ Separated the UI from the back-end logic
-	○ Used object-oriented programming
-	○ Created a functional UI for the application
+
+ -	  Covered the core features requirements
+ -	  Separated the UI from the back-end logic
+ -	  Used object-oriented programming
+ -	  Created a functional UI for the application
